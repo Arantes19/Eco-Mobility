@@ -1,6 +1,6 @@
 /**
  * @file main.c
- * @author your name (you@domain.com)
+ * @author Francisco Arantes (a23504@alunos.ipca.pt)
  * @brief 
  * @version 0.1
  * @date 2023-03-04
