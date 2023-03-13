@@ -52,6 +52,7 @@ Client* insertClient(Client* begin, int nif, float bal, char name[], char addr[]
             new->balance = bal;
             strcpy(new->address, addr);
             strcpy(new->Cname, name);
+            new->nextc=begin;
             return (new);
         }
         else return(begin);
@@ -70,3 +71,29 @@ int existClient(Client* begin, int nif)
     }
 }
 
+Client* removeClient(Client* begin, int nif)
+{
+    Client *previous = begin, *actual = begin, *aux;
+    if (actual == NULL) return(NULL);
+    else if (actual->NIF == nif)
+    {
+        aux = actual->nextc;
+        free(actual);
+        return(aux);
+    }
+    else
+    {
+        while((actual != NULL)&&(actual->NIF!=nif))
+        {
+            previous = actual;
+            actual = actual->nextc;
+        }
+        if (actual == NULL) return(begin);
+        else
+        {
+            previous->nextc = actual->nextc;
+            free(actual);
+            return(begin);
+        }
+    }  
+}

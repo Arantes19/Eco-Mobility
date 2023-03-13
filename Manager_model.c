@@ -64,6 +64,32 @@ int existManager(Manager* begin, int mcod)
             begin = begin->nextm;
         }
         return(0);
+    }    
+}
+
+Manager* removeManager(Manager* begin, int mcod)
+{
+    Manager *previous = begin, *actual = begin, *aux;
+    if (actual == NULL) return(NULL);
+    else if (actual->Mcode == mcod)
+    {
+        aux = actual->nextm;
+        free(actual);
+        return(aux);
     }
-    
+    else
+    {
+        while((actual != NULL)&&(actual->Mcode!=mcod))
+        {
+            previous = actual;
+            actual = actual->nextm;
+        }
+        if (actual == NULL) return(begin);
+        else
+        {
+            previous->nextm = actual->nextm;
+            free(actual);
+            return(begin);
+        }
+    }  
 }

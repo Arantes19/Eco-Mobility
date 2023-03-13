@@ -69,3 +69,39 @@ int existVehicle(Vehicle* begin, int cod)
         return(0);
     }
 }
+
+/*void listVehicle(Vehicle* begin)
+{
+    while (begin != NULL)
+    {
+        printf("%d %s %d %f\n", begin->code, begin->type, begin->batery, begin->price);
+        begin = begin->nextv;
+    }
+}*/
+
+Vehicle* removeVehicle(Vehicle* begin, int cod)
+{
+    Vehicle *previous = begin, *actual = begin, *aux;
+    if (actual == NULL) return(NULL);
+    else if (actual->code == cod)
+    {
+        aux = actual->nextv;
+        free(actual);
+        return(aux);
+    }
+    else
+    {
+        while((actual != NULL)&&(actual->code!=cod))
+        {
+            previous = actual;
+            actual = actual->nextv;
+        }
+        if (actual == NULL) return(begin);
+        else
+        {
+            previous->nextv = actual->nextv;
+            free(actual);
+            return(begin);
+        }
+    }  
+}
