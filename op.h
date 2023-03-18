@@ -29,10 +29,10 @@ typedef struct manager
 
 //Client sub-rotines
 Client* insertClient(Client* begin, int ccode, int nif, char name[],  float bal, char addr[]);
-Client* readClient();
+Client* readClients();
 int saveClient(Client* begin);
-int existClient(Client* begin, int nif);
-Client* removeClient(Client* begin, int nif);
+int existClient(Client* begin, int ccode);
+Client* removeClient(Client* begin, int ccode);
 
 
 //Vehicle sub-rotines

@@ -18,13 +18,13 @@ int existClient(Client* begin, int ccode)
 int saveClient(Client* begin)
 {
     FILE* fp;
-    fp = fopen("clients.txt", "w");
+    fp = fopen("clients.txt", "a");
     if (fp!=NULL)
     {
         Client* aux = begin;
         while (aux !=NULL)
         {
-            fprintf(fp, "%d;%d;%f;%s;%s\n",aux->cCode, aux->nif, aux->name, aux->balance, aux->address);
+            fprintf(fp, "%d;%d;%s;%f;%s\n",aux->cCode, aux->nif, aux->name, aux->balance, aux->address);
             aux = aux->nextc;
         }
         fclose((fp));
@@ -33,7 +33,7 @@ int saveClient(Client* begin)
     else return(0);
 }
 
-Client* readClient()
+Client* readClients()
 {
     FILE* fp;
     int nif, ccode;
@@ -45,7 +45,7 @@ Client* readClient()
     if (fp != NULL)
     {
         while(!feof(fp))
-        {fscanf(fp, "%d;%d;%f;%[^;];%s\n",&ccode, &nif, &bal, &name, &addr);
+        {fscanf(fp, "%d;%d;%[^;];%f;%[^\n]\n", &ccode, &nif, name, &bal, addr);
         aux = insertClient(aux, ccode, nif, name, bal, addr);
         }
         fclose(fp);
@@ -60,10 +60,10 @@ Client* insertClient(Client* begin, int ccode, int nif, char name[],  float bal,
         Client* newClient = malloc(sizeof(struct client));
         if (newClient != NULL)
         {
-            newClient->cCode, ccode;
+            newClient->cCode = ccode;
             newClient->nif = nif;
             strcpy(newClient->name, name);
-             newClient->balance = bal;
+            newClient->balance = bal;
             strcpy(newClient->address, addr);
             newClient->nextc = begin;
             begin = newClient; //!!! 

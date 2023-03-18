@@ -29,7 +29,7 @@ int menu()
     printf("18. Change Manager\n\n");
     printf("0. Leave\n\n");
 
-    printf("Opcao:\n");
+    printf("Opcao: ");
     scanf("%d",&op);
     return(op);
 }
@@ -50,7 +50,7 @@ int main()
         op = menu();
         switch (op)
         {
-            case 1: clients = readClient();     break;
+            case 1: clients = readClients();     break;
             case 2: 
                     printf("Client's Code: \n");
                     scanf("%d", &ccode);
@@ -64,12 +64,12 @@ int main()
                     scanf("%*c"); 
                     printf("Client's Address: \n");
                     scanf("%[^\n]", addr);
-                    clients = insertClient(clients,ccode, nif, name, bal, addr);
+                        clients = insertClient(clients, ccode, nif, name, bal, addr);
                 break;
             case 3: saveClient(clients);    break;
-            case 4: printf("Codigo do meio de mobilidade a remover?\n");
-                    scanf("%d",&ccode);
-                    clients = removerMeio(clients, ccode);
+            case 4: printf("Codigo do meio de mobilidade a remover: ");
+                    scanf("%d", &ccode);
+                    clients = removeClient(clients, ccode);
                 break;
             // case 5: printf("Vehicle's Code: \n");
             //         scanf("%d", &cod);

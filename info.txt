@@ -11,3 +11,5 @@ criar clientes/veiculos no ficheiro de txt
 guardar esses clients na estrutura de dados criada
 abre ficheiro, percorre linha, ler, criar cliente, insertClient
 printf("%s",getesg(27,pt));
+
+
