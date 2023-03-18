@@ -12,9 +12,10 @@ typedef struct vehicle
 
 typedef struct client
 {
-    int NIF;
+    int cCode;
+    int nif;
+    char name[TAM];
     float balance;
-    char Cname[TAM];
     char address[TAM];
     struct client* nextc;
 }Client;
@@ -27,7 +28,7 @@ typedef struct manager
 }Manager;
 
 //Client sub-rotines
-Client* insertClient(Client* begin, int nif, float bal, char name[], char addr[]);
+Client* insertClient(Client* begin, int ccode, int nif, char name[],  float bal, char addr[]);
 Client* readClient();
 int saveClient(Client* begin);
 int existClient(Client* begin, int nif);
