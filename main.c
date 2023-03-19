@@ -42,17 +42,16 @@ int main()
     Client* clients = NULL;
     Manager* managers = NULL;
 
-    int op, ccode, nif, cod, bat, mcod;
-    float bal, prc;
-    char name[TAM], addr[TAM], tp[TAM], mname[TAM];
+    int op, ccode, nif, cod, mcod, stat;
+    float bal, prc, aut, bat;
+    char name[TAM], addr[TAM], tp[TAM], mname[TAM], geo[TAM];
     do
     {
         op = menu();
         switch (op)
         {
             case 1: clients = readClients();     break;
-            case 2: 
-                    printf("Client's Code: \n");
+            case 2: printf("Client's Code: \n");
                     scanf("%d", &ccode);
                     printf("Client's NIF: \n");
                     scanf("%d", &nif);
@@ -67,37 +66,54 @@ int main()
                         clients = insertClient(clients, ccode, nif, name, bal, addr);
                 break;
             case 3: saveClient(clients);    break;
-            case 4: printf("Codigo do meio de mobilidade a remover: ");
+            case 4: printf("Client's code to remove: ");
                     scanf("%d", &ccode);
                     clients = removeClient(clients, ccode);
                 break;
-            // case 5: printf("Vehicle's Code: \n");
-            //         scanf("%d", &cod);
-            //         printf("Vehicle's Type: \n");
-            //         scanf("%s", tp);
-            //         printf("Vehicle's Battery: \n");
-            //         scanf("%d", &bat);
-            //         printf("Vehicle's Price: \n");
-            //         scanf("%f", &prc);
-            //         vehicles = insertVehicle(vehicles, cod, tp, bat, prc);
-            //     break;
-            // case 6: printf("Manager's Code: \n");
-            //         scanf("%d", &mcod);
-            //         printf("Manager's Name: \n");
-            //         scanf("%s", mname);
-            //         managers = insertManager(managers, mcod, mname);
-            //     break;
-            // case 7: printf("NIF do Cliente a remover?\n");
-            //         scanf("%d",&cod);
-            //         meios = removerMeio(meios, cod);
-            //     break;
-            // case 8: saveVehicle(vehicles);  break;
-            // case 9: saveManager(managers);  break;
-            // case 10: vehicles = readVehicle();   break;
-            // case 11: managers = readManager();   break;
-            // case 12: removeClient(clients, 59214171); break;
-            // case 13:   break;
-            // case 14:   break;
+            case 5: break;
+            
+            case 6: vehicles = readVehicles();   break;
+            case 7: printf("Vehicle's Code: \n");
+                    scanf("%d", &cod);
+                    scanf("%*c"); 
+                    printf("Vehicle's Type: \n");
+                    scanf("%[^\n]", tp);
+                    printf("Vehicle's Battery: \n");
+                    scanf("%f", &bat);
+                    printf("Vehicle's Autonomy: \n");
+                    scanf("%f", &aut);
+                    printf("Vehicle's Price: \n");
+                    scanf("%f", &prc);
+                    scanf("%*c");
+                    printf("Vehicle's Geocode: \n");
+                    scanf("%[^\n]", geo);
+                    printf("Vehicle's State: \n");
+                    scanf("%d", &stat);
+                        vehicles = insertVehicle(vehicles, cod, tp, bat, aut, prc, geo, stat);
+                break;
+            case 8: saveVehicle(vehicles);  break;
+            case 9: printf("Vehicles code to remove: ");
+                    scanf("%d", &cod);
+                    vehicles = removeVehicle(vehicles, cod);
+                break;
+            case 10: break;
+            case 11: break;
+            case 12: break;
+            case 13: break;
+
+            case 14: managers = readManager();   break;
+            case 15: printf("Manager's Code: \n");
+                    scanf("%d", &mcod);
+                    printf("Manager's Name: \n");
+                    scanf("%s", mname);
+                    managers = insertManager(managers, mcod, mname);
+                break; 
+            case 16: saveManager(managers);  break;
+            case 17: printf("Manager's Code to remove: ");
+                    scanf("%d",&cod);
+                    managers = removeManager(managers, cod);
+                break;  break;
+            case 18:   break;
             default:
                 break;
         }

@@ -3,10 +3,13 @@
 
 typedef struct vehicle
 {
-    int code;
+    int vCode;
     char type[TAM];
-    int batery;
+    float batery;
+    float autonomy;
     float price;
+    char geocode[TAM];
+    int state;
     struct vehicle* nextv; 
 }Vehicle;
 
@@ -36,8 +39,8 @@ Client* removeClient(Client* begin, int ccode);
 
 
 //Vehicle sub-rotines
-Vehicle* insertVehicle(Vehicle* begin, int cod, char tp[], int bat, float prc);
-Vehicle* readVehicle();
+Vehicle* insertVehicle(Vehicle* begin, int cod, char tp[], float bat, float aut, float prc, char geo[], int stat);
+Vehicle* readVehicles();
 int saveVehicle(Vehicle* begin);
 int existVehicle(Vehicle* begin, int cod);
 //void listVehicle(Vehicle* begin);

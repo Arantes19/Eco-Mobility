@@ -6,55 +6,64 @@
 int saveVehicle(Vehicle* begin)
 {
     FILE* fp;
-    fp = fopen("vechicles.txt", "w");
-    if (fp!=NULL)
+    fp = fopen("vehicles.txt", "a");
+    if (fp != NULL)
     {
         Vehicle* aux = begin;
-        while (aux !=NULL)
+        while (aux != NULL)
         {
-            fprintf(fp, "%d;%f;%s;%s\n", aux->code, aux->type, aux->batery, aux->price);
+            fprintf(fp, "%d;%s;%f;%f;%f;%s;%d\n", aux->vCode, aux->type, aux->batery, aux->autonomy, aux->price, aux->geocode, aux->state);
             aux = aux->nextv;
         }
-        fclose((fp));
+        fclose(fp);
         return(1);
     }
-    else return(0);
+    else 
+    {
+        printf("Falha na abertura do ficheiro");
+        return(0);
+    }
 }
 
-Vehicle* readVehicle()
+Vehicle* readVehicles()
 {
     FILE* fp;
-    int cod, bat;
-    float prc;
-    char tp[50];
+    int cod, stat;
+    float prc, bat, aut;
+    char tp[50], geo[50];
 
     Vehicle* aux = NULL;
     fp = fopen("vehicles.txt", "r");
     if (fp != NULL)
     {
         while(!feof(fp))
-        {fscanf(fp, "%d;%[^\n];%d;%f\n", &cod, &tp, &bat, &prc);
-        aux = insertVehicle(aux, cod, tp, bat, prc);
+        {fscanf(fp, "%d;%[^;];%f;%f;%f;%[^;];%d\n", &cod, tp, &bat, &aut, &prc, geo, &stat);
+        aux = insertVehicle(aux, cod, tp, bat, aut, prc, geo, stat);
         }
         fclose(fp);
     }
     return(aux);
 }
 
-Vehicle* insertVehicle(Vehicle* begin, int cod, char tp[], int bat, float prc)
+Vehicle* insertVehicle(Vehicle* begin, int cod, char tp[], float bat, float aut, float prc, char geo[], int stat)
 {
     if (!existVehicle(begin, cod))
     {
-        Vehicle* new = malloc(sizeof(struct vehicle));
-        if (new != NULL)
+        Vehicle* newVehicle = malloc(sizeof(struct vehicle));
+        if (newVehicle != NULL)
         {
-            new->code = cod;
-            strcpy(new->type, tp);
-            new->batery = bat;
-            new->price = prc;
-            return (new);
+            newVehicle->vCode = cod;
+            strcpy(newVehicle->type, tp);
+            newVehicle->batery = bat;
+            newVehicle->price = prc;
+            newVehicle->autonomy = aut;
+            strcpy(newVehicle->geocode, geo);
+            newVehicle->state = stat;
+            newVehicle->nextv = begin; //update next pointer
+            begin = newVehicle; //!!! 
+            return newVehicle; // return new head pointer
         }
-        else return(begin);
+        else return begin; // Return the old head pointer if the vehicle already exists or memory allocation failed
     }
 }
 
@@ -62,11 +71,11 @@ int existVehicle(Vehicle* begin, int cod)
 {
     while (begin != NULL)
     {
-        if (begin->code == cod) return(1);
+        if (begin->vCode == cod) return 1;
         {
             begin = begin->nextv;
         }
-        return(0);
+        return 0;
     }
 }
 
@@ -83,7 +92,7 @@ Vehicle* removeVehicle(Vehicle* begin, int cod)
 {
     Vehicle *previous = begin, *actual = begin, *aux;
     if (actual == NULL) return(NULL);
-    else if (actual->code == cod)
+    else if (actual->vCode == cod)
     {
         aux = actual->nextv;
         free(actual);
@@ -91,7 +100,7 @@ Vehicle* removeVehicle(Vehicle* begin, int cod)
     }
     else
     {
-        while((actual != NULL)&&(actual->code!=cod))
+        while((actual != NULL)&&(actual->vCode!=cod))
         {
             previous = actual;
             actual = actual->nextv;
