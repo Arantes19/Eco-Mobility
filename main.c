@@ -3,6 +3,8 @@
 #include <string.h>
 #include "op.h"
 
+
+
 int menu()
 {
     int op;
@@ -42,7 +44,7 @@ int main()
     Client* clients = NULL;
     Manager* managers = NULL;
 
-    int op, ccode, nif, cod, mcod, stat, gcod, cont;
+    int op, ccode, nif, cod, mcod, stat, gcod, cont, updt;
     float bal, prc, aut, bat;
     char name[TAM], addr[TAM], tp[TAM], mname[TAM], geo[TAM], pass[TAM];
     do
@@ -70,7 +72,12 @@ int main()
                     scanf("%d", &ccode);
                     clients = removeClient(clients, ccode);
                 break;
-            case 5: break;
+            case 5: printf("Insert the Client's Code you want to update: ");
+                    scanf("%d", &ccode);
+                    printf("What do you want to update: (1)-NIF | (2)-Name | (3)-Balance | (4)-Address\n Option: ");
+                    scanf("%d", &updt);
+                    UpdateClients(clients, ccode, updt);
+                break;
             
             case 6: vehicles = readVehicles();   break;
             case 7: printf("Vehicle's Code: \n");
@@ -97,7 +104,7 @@ int main()
                     vehicles = removeVehicle(vehicles, cod);
                 break;
             case 10: break;
-            case 11: break;
+            case 11: listVehicle(vehicles); break;
             case 12: break;
             case 13: break;
 

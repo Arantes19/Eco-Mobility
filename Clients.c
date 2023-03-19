@@ -27,7 +27,7 @@ int saveClient(Client* begin)
             fprintf(fp, "%d;%d;%s;%f;%s\n",aux->cCode, aux->nif, aux->name, aux->balance, aux->address);
             aux = aux->nextc;
         }
-        fclose((fp));
+        fclose(fp);
         return(1);
     }
     else return(0);
@@ -57,7 +57,7 @@ Client* insertClient(Client* begin, int ccode, int nif, char name[],  float bal,
 {
     if (!existClient(begin, ccode))
     {
-        Client* newClient = malloc(sizeof(struct client));
+        Client* newClient = malloc(sizeof(struct client));  // Allocate memory for new node;
         if (newClient != NULL)
         {
             newClient->cCode = ccode;
@@ -99,4 +99,75 @@ Client* removeClient(Client* begin, int ccode)
             return(begin);
         }
     }  
+}
+
+int countClients(Client *begin)
+{
+    int c = 0;
+    while(begin!= NULL)
+    {
+        begin =begin->nextc;
+        c++;
+    }
+    return c;
+}
+
+void UpdateClients(Client* begin, int ccode, int op) 
+{
+    int n = countClients(begin);
+    int i, nif;
+    float balance;
+    char name[TAM], address[TAM];
+   
+    if(begin == NULL) {
+        printf("Linked List is Empty");
+        return;
+    } 
+
+    if(ccode > n) printf("Clients doesn't exist!!");
+    else if (ccode > 0)
+    {
+        for (i = 0; i < ccode; i++)
+            begin = begin->nextc;
+        
+         switch (op)
+        {
+            if (begin == NULL) {        
+            printf("Error: Client is null.\n");
+            return;
+            }
+        case 1:
+            fflush(stdin);
+            printf("Enter new NIF: ");
+            scanf("%d", &nif);
+            begin->nif = nif;
+            break;
+        case 2:
+            fflush(stdin);
+            printf("Enter new name: ");
+            fgets(name, TAM, stdin);
+            strtok(name, "\n"); // remove trailing newline character
+            strcpy(begin->name, name);
+            break;
+        case 3:
+            fflush(stdin);
+            printf("Enter new balance: ");
+            scanf("%f", &balance);
+            begin->balance = balance;
+            break;
+        case 4:
+            fflush(stdin);
+            printf("Enter new address: ");
+            fgets(address, TAM, stdin);
+            strtok(address, "\n"); // remove trailing newline character
+            strcpy(begin->address, address);
+            break;
+        default:
+            break;
+        }
+        if (saveClient(begin))
+            printf("Client updated successfully.\n");
+        else printf("Failed to update client.\n");
+        
+        }
 }

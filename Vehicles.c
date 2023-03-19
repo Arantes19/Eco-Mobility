@@ -79,14 +79,55 @@ int existVehicle(Vehicle* begin, int cod)
     }
 }
 
-/*void listVehicle(Vehicle* begin)
+int countVehicles(Vehicle *begin)
 {
-    while (begin != NULL)
+    int c = 0;
+    while(begin!= NULL)
     {
-        printf("%d %s %d %f\n", begin->code, begin->type, begin->batery, begin->price);
-        begin = begin->nextv;
+        begin =begin->nextv;
+        c++;
     }
-}*/
+    return c;
+}
+
+
+void listVehicle(Vehicle* begin) 
+{
+    if (begin == NULL) {
+        printf("Linked List is Empty");
+        return;
+    } 
+
+    // // Count the number of vehicles in the list
+    int n = countVehicles(begin);
+    
+    // Convert the linked list to an array of pointers to vehicles
+    Vehicle* arr[n];
+    Vehicle* curr = begin;
+    for (int i = 0; i < n; i++) {
+        arr[i] = curr;
+        curr = curr->nextv;
+    }
+    
+    // Sort the array of pointers using a bubble sort algorithm
+    for (int i = 0; i < n - 1; i++) {
+        for (int j = 0; j < n - i - 1; j++) {
+            if (arr[j]->autonomy < arr[j+1]->autonomy) {
+                Vehicle* temp = arr[j];
+                arr[j] = arr[j+1];
+                arr[j+1] = temp;
+            }
+        }
+    }
+    
+    // Print the sorted list of vehicles
+    printf("List of Vehicles: \n\n");
+    for (int i = 0; i < n; i++) {
+        printf("%d -> %s -> %f -> %f -> %f -> %s -> %d\n", arr[i]->vCode, arr[i]->type, arr[i]->batery, arr[i]->autonomy, arr[i]->price, arr[i]->geocode, arr[i]->state);
+        i++;
+    }
+}
+
 
 Vehicle* removeVehicle(Vehicle* begin, int cod)
 {
