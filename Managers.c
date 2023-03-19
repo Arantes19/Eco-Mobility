@@ -6,60 +6,68 @@
 int saveManager(Manager* begin)
 {
     FILE* fp;
-    fp = fopen("managers.txt", "w");
+    fp = fopen("managers.txt", "a");
     if (fp!=NULL)
     {
         Manager* aux = begin;
         while (aux !=NULL)
         {
-            fprintf(fp, "%d;%s\n", aux->Mcode, aux->Mname);
+            fprintf(fp, "%d;%s;%d;%s\n", aux->gCode, aux->password, aux->contact, aux->username);
             aux = aux->nextm;
         }
-        fclose((fp));
-        return(1);
+        fclose(fp);
+        return 1;
     }
-    else return(0);
+    else 
+    {
+        printf("Falha na abertura do ficheiro");
+        return(0);
+    }
 }
 
-Manager* readManager()
+Manager* readManagers()
 {
     FILE* fp;
-    int mcod;
-    char mname[50];
+    int gcod, cont;
+    char mname[50], pass[50];
 
     Manager* aux = NULL;
     fp = fopen("managers.txt", "r");
     if (fp != NULL)
     {
         while(!feof(fp))
-        {fscanf(fp, "%d;%[^\n]\n", &mcod, &mname);
-        aux = insertManager(aux, mcod, mname);
+        {fscanf(fp, "%d;%[^;];%d;%[^\n]\n", &gcod, pass, &cont, mname);
+        aux = insertManager(aux, gcod, pass, cont, mname);
         }
         fclose(fp);
     }
     return(aux);
 }
 
-Manager* insertManager(Manager* begin, int mcod, char mname[])
+Manager* insertManager(Manager* begin, int gcod, char pass[], int cont, char mname[])
 {
-    if (!existManager(begin, mcod))
+    if (!existManager(begin, gcod))
     {
-        Manager* new = malloc(sizeof(struct manager));
-        if (new != NULL)
+        Manager* newManager = malloc(sizeof(struct manager));
+        if (newManager != NULL)
         {
-            new->Mcode = mcod;
-            strcpy(new->Mname, mname);
-            return (new);
+            newManager->gCode = gcod;
+            strcpy(newManager->password, pass);
+            newManager->contact = cont;
+            strcpy(newManager->username, mname);
+            newManager->nextm = begin;
+            begin = newManager;
+            return (newManager);
         }
         else return(begin);
     }
 }
 
-int existManager(Manager* begin, int mcod)
+int existManager(Manager* begin, int gcod)
 {
     while (begin != NULL)
     {
-        if (begin->Mcode == mcod) return(1);
+        if (begin->gCode == gcod) return(1);
         {
             begin = begin->nextm;
         }
@@ -67,11 +75,11 @@ int existManager(Manager* begin, int mcod)
     }    
 }
 
-Manager* removeManager(Manager* begin, int mcod)
+Manager* removeManager(Manager* begin, int gcod)
 {
     Manager *previous = begin, *actual = begin, *aux;
     if (actual == NULL) return(NULL);
-    else if (actual->Mcode == mcod)
+    else if (actual->gCode == gcod)
     {
         aux = actual->nextm;
         free(actual);
@@ -79,7 +87,7 @@ Manager* removeManager(Manager* begin, int mcod)
     }
     else
     {
-        while((actual != NULL)&&(actual->Mcode!=mcod))
+        while((actual != NULL)&&(actual->gCode!=gcod))
         {
             previous = actual;
             actual = actual->nextm;

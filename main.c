@@ -42,9 +42,9 @@ int main()
     Client* clients = NULL;
     Manager* managers = NULL;
 
-    int op, ccode, nif, cod, mcod, stat;
+    int op, ccode, nif, cod, mcod, stat, gcod, cont;
     float bal, prc, aut, bat;
-    char name[TAM], addr[TAM], tp[TAM], mname[TAM], geo[TAM];
+    char name[TAM], addr[TAM], tp[TAM], mname[TAM], geo[TAM], pass[TAM];
     do
     {
         op = menu();
@@ -101,17 +101,23 @@ int main()
             case 12: break;
             case 13: break;
 
-            case 14: managers = readManager();   break;
+            case 14: managers = readManagers();   break;
             case 15: printf("Manager's Code: \n");
-                    scanf("%d", &mcod);
+                    scanf("%d", &gcod);
+                    scanf("%*c");
+                    printf("Manager's Password: \n");
+                    scanf("%[^\n]", pass);
+                    printf("Manager's Contact: \n");
+                    scanf("%d", &cont);
+                    scanf("%*c");
                     printf("Manager's Name: \n");
-                    scanf("%s", mname);
-                    managers = insertManager(managers, mcod, mname);
+                    scanf("%[^\n]", mname);
+                    managers = insertManager(managers, gcod, pass, cont, mname);
                 break; 
             case 16: saveManager(managers);  break;
             case 17: printf("Manager's Code to remove: ");
-                    scanf("%d",&cod);
-                    managers = removeManager(managers, cod);
+                    scanf("%d",&gcod);
+                    managers = removeManager(managers, gcod);
                 break;  break;
             case 18:   break;
             default:

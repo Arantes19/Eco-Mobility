@@ -25,8 +25,10 @@ typedef struct client
 
 typedef struct manager
 {
-    int Mcode;
-    char Mname[TAM];
+    int gCode;
+    char password[TAM];
+    int contact;
+    char username[TAM];
     struct manager* nextm;
 }Manager;
 
@@ -47,9 +49,9 @@ int existVehicle(Vehicle* begin, int cod);
 Vehicle* removeVehicle(Vehicle* begin, int cod);
 
 //Manager sub-rotines
-Manager* insertManager(Manager* begin, int mcod, char mname[]);
-Manager* readManager();
+Manager* insertManager(Manager* begin, int gcod, char pass[], int cont, char mname[]);
+Manager* readManagers();
 int saveManager(Manager* begin);
-int existManager(Manager* begin, int mcod);
-Manager* removeManager(Manager* begin, int mcod);
+int existManager(Manager* begin, int gcod);
+Manager* removeManager(Manager* begin, int gcod);
 
