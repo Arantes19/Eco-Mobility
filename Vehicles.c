@@ -6,7 +6,7 @@
 int saveVehicle(Vehicle* begin)
 {
     FILE* fp;
-    fp = fopen("vehicles.txt", "a");
+    fp = fopen("vehicles.txt", "w");
     if (fp != NULL)
     {
         Vehicle* aux = begin;
@@ -79,6 +79,14 @@ int existVehicle(Vehicle* begin, int cod)
     }
 }
 
+void listVehicles(Vehicle* begin)
+{while (begin != NULL) 
+ {printf("%d -> %s -> %.2f -> %.2f -> %.2f -> %s -> %d\n", begin->vCode, begin->type, begin->batery, begin->autonomy, begin->price, begin->geocode, begin->state);
+  begin = begin->nextv;
+ }
+}
+
+
 int countVehicles(Vehicle *begin)
 {
     int c = 0;
@@ -91,42 +99,42 @@ int countVehicles(Vehicle *begin)
 }
 
 
-void listVehicle(Vehicle* begin) 
-{
-    if (begin == NULL) {
-        printf("Linked List is Empty");
-        return;
-    } 
+// void listVehicleDesc(Vehicle* begin) 
+// {
+//     if (begin == NULL) {
+//         printf("Linked List is Empty");
+//         return;
+//     } 
 
-    // // Count the number of vehicles in the list
-    int n = countVehicles(begin);
+//     // // Count the number of vehicles in the list
+//     int n = countVehicles(begin);
     
-    // Convert the linked list to an array of pointers to vehicles
-    Vehicle* arr[n];
-    Vehicle* curr = begin;
-    for (int i = 0; i < n; i++) {
-        arr[i] = curr;
-        curr = curr->nextv;
-    }
+//     // Convert the linked list to an array of pointers to vehicles
+//     Vehicle* arr[n];
+//     Vehicle* curr = begin;
+//     for (int i = 0; i < n; i++) {
+//         arr[i] = curr;
+//         curr = curr->nextv;
+//     }
     
-    // Sort the array of pointers using a bubble sort algorithm
-    for (int i = 0; i < n - 1; i++) {
-        for (int j = 0; j < n - i - 1; j++) {
-            if (arr[j]->autonomy < arr[j+1]->autonomy) {
-                Vehicle* temp = arr[j];
-                arr[j] = arr[j+1];
-                arr[j+1] = temp;
-            }
-        }
-    }
+//     // Sort the array of pointers using a bubble sort algorithm
+//     for (int i = 0; i < n - 1; i++) {
+//         for (int j = 0; j < n - i - 1; j++) {
+//             if (arr[j]->autonomy < arr[j+1]->autonomy) {
+//                 Vehicle* temp = arr[j];
+//                 arr[j] = arr[j+1];
+//                 arr[j+1] = temp;
+//             }
+//         }
+//     }
     
-    // Print the sorted list of vehicles
-    printf("List of Vehicles: \n\n");
-    for (int i = 0; i < n; i++) {
-        printf("%d -> %s -> %f -> %f -> %f -> %s -> %d\n", arr[i]->vCode, arr[i]->type, arr[i]->batery, arr[i]->autonomy, arr[i]->price, arr[i]->geocode, arr[i]->state);
-        i++;
-    }
-}
+//     // Print the sorted list of vehicles
+//     printf("List of Vehicles: \n\n");
+//     for (int i = 0; i < n; i++) {
+//         printf("%d -> %s -> %f -> %f -> %f -> %s -> %d\n", arr[i]->vCode, arr[i]->type, arr[i]->batery, arr[i]->autonomy, arr[i]->price, arr[i]->geocode, arr[i]->state);
+//         i++;
+//     }
+// }
 
 
 Vehicle* removeVehicle(Vehicle* begin, int cod)

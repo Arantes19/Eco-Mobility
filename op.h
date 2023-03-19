@@ -40,6 +40,7 @@ int existClient(Client* begin, int ccode);
 Client* removeClient(Client* begin, int ccode);
 void UpdateClients(Client* clients ,int ccode, int op);
 int countClients(Client *begin);
+void listClients(Client* begin);
 
 
 //Vehicle sub-rotines
@@ -47,9 +48,10 @@ Vehicle* insertVehicle(Vehicle* begin, int cod, char tp[], float bat, float aut,
 Vehicle* readVehicles();
 int saveVehicle(Vehicle* begin);
 int existVehicle(Vehicle* begin, int cod);
-void listVehicle(Vehicle* begin);
+//void listVehicleDesc(Vehicle* begin);
 Vehicle* removeVehicle(Vehicle* begin, int cod);
 int countVehicles(Vehicle *begin);
+void listVehicles(Vehicle* begin);
 
 //Manager sub-rotines
 Manager* insertManager(Manager* begin, int gcod, char pass[], int cont, char mname[]);
@@ -57,4 +59,4 @@ Manager* readManagers();
 int saveManager(Manager* begin);
 int existManager(Manager* begin, int gcod);
 Manager* removeManager(Manager* begin, int gcod);
-
+void listManagers(Manager* begin);

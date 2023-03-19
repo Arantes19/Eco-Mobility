@@ -6,7 +6,7 @@
 int saveManager(Manager* begin)
 {
     FILE* fp;
-    fp = fopen("managers.txt", "a");
+    fp = fopen("managers.txt", "w");
     if (fp!=NULL)
     {
         Manager* aux = begin;
@@ -23,6 +23,13 @@ int saveManager(Manager* begin)
         printf("Falha na abertura do ficheiro");
         return(0);
     }
+}
+
+void listManagers(Manager* begin)
+{while (begin != NULL) 
+ {printf("%d -> %s -> %d -> %s\n", begin->gCode, begin->password, begin->contact, begin->username);
+  begin = begin->nextm;
+ }
 }
 
 Manager* readManagers()

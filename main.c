@@ -28,7 +28,10 @@ int menu()
     printf("15. Insert Manager\n");
     printf("16. Save Manager\n");
     printf("17. Remove Manager\n");
-    printf("18. Change Manager\n\n");
+    printf("18. Change Manager\n");
+    printf("19. Check total clients\n");
+    printf("20. Check total vehicles\n");
+    printf("21. Check Total managers\n");
     printf("0. Leave\n\n");
 
     printf("Opcao: ");
@@ -104,7 +107,7 @@ int main()
                     vehicles = removeVehicle(vehicles, cod);
                 break;
             case 10: break;
-            case 11: listVehicle(vehicles); break;
+            //case 11: listVehicle(vehicles); break;
             case 12: break;
             case 13: break;
 
@@ -127,7 +130,10 @@ int main()
                     managers = removeManager(managers, gcod);
                 break;  break;
             case 18:   break;
-            default:
+            case 19: listClients(clients); break;
+            case 20: listVehicles(vehicles); break;
+            case 21: listManagers(managers); break;
+            default: 
                 break;
         }
     } while (op != 0);

@@ -18,7 +18,7 @@ int existClient(Client* begin, int ccode)
 int saveClient(Client* begin)
 {
     FILE* fp;
-    fp = fopen("clients.txt", "a");
+    fp = fopen("clients.txt", "w");
     if (fp!=NULL)
     {
         Client* aux = begin;
@@ -100,6 +100,14 @@ Client* removeClient(Client* begin, int ccode)
         }
     }  
 }
+
+void listClients(Client* begin)
+{while (begin != NULL) 
+ {printf("%d -> %d -> %s -> %.2f -> %s\n", begin->cCode, begin->nif, begin->name, begin->balance, begin->address);
+  begin = begin->nextc;
+ }
+}
+
 
 int countClients(Client *begin)
 {
