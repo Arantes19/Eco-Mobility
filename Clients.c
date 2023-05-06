@@ -1,8 +1,26 @@
+/**
+ * @file Clients.c
+ * @author Francisco Arantes (a23504@alunos.ipca.pt)
+ * @brief 
+ * @version 0.1
+ * @date 2023-05-06
+ * 
+ * @copyright Copyright (c) 2023
+ * 
+ */
+
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 #include "Header_Files/client.h"
 
+/**
+ * @brief Done
+ * 
+ * @param begin 
+ * @param ccode 
+ * @return int 
+ */
 int existClient(Client* begin, int ccode)
 {
     while (begin != NULL)
@@ -15,6 +33,12 @@ int existClient(Client* begin, int ccode)
     }
 }
 
+/**
+ * @brief Done
+ * 
+ * @param begin 
+ * @return int 
+ */
 int saveClient(Client* begin)
 {
     FILE* fp;
@@ -24,7 +48,7 @@ int saveClient(Client* begin)
         Client* aux = begin;
         while (aux !=NULL)
         {
-            fprintf(fp, "%d;%d;%s;%f;%s\n",aux->cCode, aux->nif, aux->name, aux->balance, aux->address);
+            fprintf(fp, "%d;%d;%s;%f;%s;%s\n",aux->cCode, aux->nif, aux->name, aux->balance, aux->address, aux->geocode);
             aux = aux->nextc;
         }
         fclose(fp);
@@ -33,27 +57,44 @@ int saveClient(Client* begin)
     else return(0);
 }
 
+/**
+ * @brief Done
+ * 
+ * @return Client* 
+ */
 Client* readClients()
 {
     FILE* fp;
     int nif, ccode;
     float bal;
-    char name[50], addr[50];
+    char name[100], addr[100], geocode[100];
 
     Client* aux = NULL;
     fp = fopen("clients.txt", "r");
     if (fp != NULL)
     {
         while(!feof(fp))
-        {fscanf(fp, "%d;%d;%[^;];%f;%[^\n]\n", &ccode, &nif, name, &bal, addr);
-        aux = insertClient(aux, ccode, nif, name, bal, addr);
+        {fscanf(fp, "%d;%d;%[^\n]s;%f;%[^\n]s;%[^\n]s\n", &ccode, &nif, name, &bal, addr, geocode);
+        aux = insertClient(aux, ccode, nif, name, bal, addr, geocode);
         }
         fclose(fp);
     }
     return(aux);
 }
 
-Client* insertClient(Client* begin, int ccode, int nif, char name[],  float bal, char addr[])
+/**
+ * @brief Done
+ * 
+ * @param begin 
+ * @param ccode 
+ * @param nif 
+ * @param name 
+ * @param bal 
+ * @param addr 
+ * @param geocode 
+ * @return Client* 
+ */
+Client* insertClient(Client* begin, int ccode, int nif, char name[], float bal, char addr[], char geocode[])
 {
     if (!existClient(begin, ccode))
     {
@@ -65,15 +106,21 @@ Client* insertClient(Client* begin, int ccode, int nif, char name[],  float bal,
             strcpy(newClient->name, name);
             newClient->balance = bal;
             strcpy(newClient->address, addr);
+            strcpy(newClient->geocode, geocode);
             newClient->nextc = begin;
-            begin = newClient; //!!! 
-            return (newClient);
+            begin = newClient;
         }
     }
     return(begin);
-    printf("Client already exist!");
 }
 
+/**
+ * @brief Done
+ * 
+ * @param begin 
+ * @param ccode 
+ * @return Client* 
+ */
 Client* removeClient(Client* begin, int ccode)
 {
     Client *previous = begin, *actual = begin, *aux;
@@ -101,81 +148,63 @@ Client* removeClient(Client* begin, int ccode)
     }  
 }
 
+/**
+ * @brief Done
+ * 
+ * @param begin 
+ */
 void listClients(Client* begin)
 {while (begin != NULL) 
- {printf("%d -> %d -> %s -> %.2f -> %s\n", begin->cCode, begin->nif, begin->name, begin->balance, begin->address);
+ {printf("%d -> %d -> %s -> %.2f -> %s -> %s\n", begin->cCode, begin->nif, begin->name, begin->balance, begin->address, begin->geocode);
   begin = begin->nextc;
  }
 }
 
-
-int countClients(Client *begin)
+/**
+ * @brief Done
+ * 
+ * @param begin 
+ * @param ccode 
+ * @param nif 
+ * @param newaddress 
+ * @return int 
+ */
+int UpdateClients(Client* begin, int ccode, int nif, char newaddress[]) 
 {
-    int c = 0;
-    while(begin!= NULL)
+    Client *actual = begin;
+    while(actual != NULL)
     {
-        begin =begin->nextc;
-        c++;
+        if(actual->cCode == ccode && actual->nif == nif)
+        {
+            strcpy(actual->address, newaddress);
+            return 1;
+        }
+        actual= actual->nextc;
     }
-    return c;
+    return 0;
 }
 
-void UpdateClients(Client* begin, int ccode, int op) 
+/**
+ * @brief Done
+ * 
+ * @param begin 
+ * @param ccod 
+ * @param value 
+ * @return Client* 
+ */
+Client* chargeBalance(Client *begin, int ccod, float value) 
 {
-    int n = countClients(begin);
-    int i, nif;
-    float balance;
-    char name[TAM], address[TAM];
-   
-    if(begin == NULL) {
-        printf("Linked List is Empty");
-        return;
-    } 
-
-    if(ccode > n) printf("Clients doesn't exist!!");
-    else if (ccode > 0)
+    Client *client = begin;
+    while (client != NULL) 
     {
-        for (i = 0; i < ccode; i++)
-            begin = begin->nextc;
-        
-         switch (op)
+        if (client->cCode == ccod ) 
         {
-            if (begin == NULL) {        
-            printf("Error: Client is null.\n");
-            return;
-            }
-        case 1:
-            fflush(stdin);
-            printf("Enter new NIF: ");
-            scanf("%d", &nif);
-            begin->nif = nif;
-            break;
-        case 2:
-            fflush(stdin);
-            printf("Enter new name: ");
-            fgets(name, TAM, stdin);
-            strtok(name, "\n"); // remove trailing newline character
-            strcpy(begin->name, name);
-            break;
-        case 3:
-            fflush(stdin);
-            printf("Enter new balance: ");
-            scanf("%f", &balance);
-            begin->balance = balance;
-            break;
-        case 4:
-            fflush(stdin);
-            printf("Enter new address: ");
-            fgets(address, TAM, stdin);
-            strtok(address, "\n"); // remove trailing newline character
-            strcpy(begin->address, address);
-            break;
-        default:
-            break;
+            client->balance += value;
+            printf("Saldo atualizado com sucesso!\n Novo saldo: %.2f\n", client->balance);
+            return client;
         }
-        if (saveClient(begin))
-            printf("Client updated successfully.\n");
-        else printf("Failed to update client.\n");
-        
-        }
+        client = client->nextc;
+    }
+    printf("Cliente nÃo encontrado.\n");
+    return NULL;
 }

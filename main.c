@@ -1,3 +1,14 @@
+/**
+ * @file main.c
+ * @author your name (you@domain.com)
+ * @brief 
+ * @version 0.1
+ * @date 2023-05-06
+ * 
+ * @copyright Copyright (c) 2023
+ * 
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -17,23 +28,23 @@ int menu()
     printf("4. Remove Client\n");
     printf("5. Change Client\n\n");
 
-    printf("6. Read Vehicles\n");
-    printf("7. Insert Vehicle\n");
-    printf("8. Save Vehicle\n");
-    printf("9. Remove Vehicle\n");
-    printf("10. Change Vehicle\n");
-    printf("11. List Vehicles\n");
-    printf("12. List Vehicles per Location\n");
-    printf("13. Register Vehicle\n\n");
+    // printf("6. Read Vehicles\n");
+    // printf("7. Insert Vehicle\n");
+    // printf("8. Save Vehicle\n");
+    // printf("9. Remove Vehicle\n");
+    // printf("10. Change Vehicle\n");
+    // printf("11. List Vehicles\n");
+    // printf("12. List Vehicles per Location\n");
+    // printf("13. Register Vehicle\n\n");
 
-    printf("14. Read Managers\n");
-    printf("15. Insert Manager\n");
-    printf("16. Save Manager\n");
-    printf("17. Remove Manager\n");
-    printf("18. Change Manager\n");
-    printf("19. Check total clients\n");
-    printf("20. Check total vehicles\n");
-    printf("21. Check Total managers\n");
+    // printf("14. Read Managers\n");
+    // printf("15. Insert Manager\n");
+    // printf("16. Save Manager\n");
+    // printf("17. Remove Manager\n");
+    // printf("18. Change Manager\n");
+    // printf("19. Check total clients\n");
+    // printf("20. Check total vehicles\n");
+    // printf("21. Check Total managers\n");
     printf("0. Leave\n\n");
 
     printf("Opcao: ");
@@ -50,8 +61,8 @@ int main()
     Manager* managers = NULL;
 
     int op, ccode, nif, cod, mcod, stat, gcod, cont, updt;
-    float bal, prc, aut, bat;
-    char name[TAM], addr[TAM], tp[TAM], mname[TAM], geo[TAM], pass[TAM];
+    float bal, prc, aut, bat, val;
+    char name[TAM], addr[TAM], tp[TAM], mname[TAM], geo[TAM], pass[TAM], geocode[TAM], newadd[TAM];
     do
     {
         op = menu();
@@ -70,7 +81,7 @@ int main()
                     scanf("%*c"); 
                     printf("Client's Address: \n");
                     scanf("%[^\n]", addr);
-                        clients = insertClient(clients, ccode, nif, name, bal, addr);
+                        clients = insertClient(clients, ccode, nif, name, bal, addr, geocode);
                 break;
             case 3: saveClient(clients);    break;
             case 4: printf("Client's code to remove: ");
@@ -81,7 +92,7 @@ int main()
                     scanf("%d", &ccode);
                     printf("What do you want to update: (1)-NIF | (2)-Name | (3)-Balance | (4)-Address\n Option: ");
                     scanf("%d", &updt);
-                    UpdateClients(clients, ccode, updt);
+                    UpdateClients(clients, ccode, nif, newadd);
                 break;
             
             case 6: vehicles = readVehicles();   break;
