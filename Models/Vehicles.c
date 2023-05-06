@@ -12,7 +12,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include "Header_Files/vehicles.h"
+#include "../Header_Files/vehicles.h"
 
 /**
  * @brief Done
@@ -23,7 +23,7 @@
 int saveVehicle(Vehicle* begin)
 {
     FILE* fp;
-    fp = fopen("vehicles.txt", "w");
+    fp = fopen("Text_Files/vehicles.txt", "w");
     if (fp != NULL)
     {
         Vehicle* aux = begin;
@@ -51,7 +51,7 @@ Vehicle* readVehicles()
     char tp[50], geo[50];
     Vehicle* aux = NULL;
 
-    fp = fopen("vehicles.txt", "r");
+    fp = fopen("Text_Files/vehicles.txt", "r");
     if (fp != NULL)
     {
         while(!feof(fp))

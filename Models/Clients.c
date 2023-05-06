@@ -12,7 +12,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include "Header_Files/client.h"
+#include "../Header_Files/client.h"
 
 /**
  * @brief Done
@@ -42,7 +42,7 @@ int existClient(Client* begin, int ccode)
 int saveClient(Client* begin)
 {
     FILE* fp;
-    fp = fopen("clients.txt", "w");
+    fp = fopen("Text_Files/clients.txt", "w");
     if (fp!=NULL)
     {
         Client* aux = begin;
@@ -70,7 +70,7 @@ Client* readClients()
     char name[100], addr[100], geocode[100];
 
     Client* aux = NULL;
-    fp = fopen("clients.txt", "r");
+    fp = fopen("Text_Files/clients.txt", "r");
     if (fp != NULL)
     {
         while(!feof(fp))

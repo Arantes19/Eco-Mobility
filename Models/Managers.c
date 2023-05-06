@@ -12,12 +12,12 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include "Header_Files/manager.h"
+#include "../Header_Files/manager.h"
 
 int saveManager(Manager* begin)
 {
     FILE* fp;
-    fp = fopen("managers.txt", "w");
+    fp = fopen("Text_Files/managers.txt", "w");
     if (fp!=NULL)
     {
         Manager* aux = begin;
@@ -50,7 +50,7 @@ Manager* readManagers()
     char mname[50], pass[50];
 
     Manager* aux = NULL;
-    fp = fopen("managers.txt", "r");
+    fp = fopen("Text_Files/managers.txt", "r");
     if (fp != NULL)
     {
         while(!feof(fp))
