@@ -81,6 +81,9 @@ int main()
                     scanf("%*c"); 
                     printf("Client's Address: \n");
                     scanf("%[^\n]", addr);
+                    scanf("%*c");
+                    printf("Client's Geocode: \n");
+                    scanf("%[^\n]", geocode);
                         clients = insertClient(clients, ccode, nif, name, bal, addr, geocode);
                 break;
             case 3: saveClient(clients);    break;
@@ -90,8 +93,10 @@ int main()
                 break;
             case 5: printf("Insert the Client's Code you want to update: ");
                     scanf("%d", &ccode);
-                    printf("What do you want to update: (1)-NIF | (2)-Name | (3)-Balance | (4)-Address\n Option: ");
-                    scanf("%d", &updt);
+                    printf("Insert the Client's NIF you want to update: ");
+                    scanf("%d", &nif);
+                    printf("Insert the Client's new Address you want to update: ");
+                    scanf("%d", &newadd);
                     UpdateClients(clients, ccode, nif, newadd);
                 break;
             

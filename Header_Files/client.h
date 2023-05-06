@@ -18,6 +18,6 @@ Client* readClients();
 int saveClient(Client* begin);
 int existClient(Client* begin, int ccode);
 Client* removeClient(Client* begin, int ccode);
-void UpdateClients(Client* begin ,int ccode, int nif, char newaddress[]);
+int UpdateClients(Client* begin ,int ccode, int nif, char newaddress[]);
 void listClients(Client* begin);
 Client* chargeBalance(Client *begin, int ccod, float value);
