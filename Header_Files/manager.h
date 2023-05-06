@@ -17,3 +17,5 @@ int saveManager(Manager* begin);
 int existManager(Manager* begin, int gcod);
 Manager* removeManager(Manager* begin, int gcod);
 void listManagers(Manager* begin);
+void contactManager(Manager* begin);
+int changeManager(Manager* begin, int gcod, char pass[], int newusername[], char newpass[]);

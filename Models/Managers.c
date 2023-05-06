@@ -48,10 +48,12 @@ int saveManager(Manager* begin)
  * @param begin 
  */
 void listManagers(Manager* begin)
-{while (begin != NULL) 
- {printf("%d -> %s -> %d -> %s\n", begin->gCode, begin->password, begin->contact, begin->username);
-  begin = begin->nextm;
- }
+{
+    while (begin != NULL) 
+    {
+        printf("%d -> %s -> %d -> %s\n", begin->gCode, begin->password, begin->contact, begin->username);
+        begin = begin->nextm;
+    }
 }
  /**
   * @brief Done
