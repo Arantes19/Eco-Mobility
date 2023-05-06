@@ -14,6 +14,12 @@
 #include <stdlib.h>
 #include "../Header_Files/manager.h"
 
+/**
+ * @brief Done
+ * 
+ * @param begin 
+ * @return int 
+ */
 int saveManager(Manager* begin)
 {
     FILE* fp;
@@ -36,13 +42,22 @@ int saveManager(Manager* begin)
     }
 }
 
+/**
+ * @brief Done
+ * 
+ * @param begin 
+ */
 void listManagers(Manager* begin)
 {while (begin != NULL) 
  {printf("%d -> %s -> %d -> %s\n", begin->gCode, begin->password, begin->contact, begin->username);
   begin = begin->nextm;
  }
 }
-
+ /**
+  * @brief Done
+  * 
+  * @return Manager* 
+  */
 Manager* readManagers()
 {
     FILE* fp;
@@ -54,7 +69,7 @@ Manager* readManagers()
     if (fp != NULL)
     {
         while(!feof(fp))
-        {fscanf(fp, "%d;%[^;];%d;%[^\n]\n", &gcod, pass, &cont, mname);
+        {fscanf(fp, "%d;%[^;\n];%d;%[^\n]\n", &gcod, pass, &cont, mname);
         aux = insertManager(aux, gcod, pass, cont, mname);
         }
         fclose(fp);
@@ -62,6 +77,16 @@ Manager* readManagers()
     return(aux);
 }
 
+/**
+ * @brief Done
+ * 
+ * @param begin 
+ * @param gcod 
+ * @param pass 
+ * @param cont 
+ * @param mname 
+ * @return Manager* 
+ */
 Manager* insertManager(Manager* begin, int gcod, char pass[], int cont, char mname[])
 {
     if (!existManager(begin, gcod))
@@ -75,12 +100,18 @@ Manager* insertManager(Manager* begin, int gcod, char pass[], int cont, char mna
             strcpy(newManager->username, mname);
             newManager->nextm = begin;
             begin = newManager;
-            return (newManager);
-        }
-        else return(begin);
+        } 
     }
+    return(begin);
 }
 
+/**
+ * @brief Done
+ * 
+ * @param begin 
+ * @param gcod 
+ * @return int 
+ */
 int existManager(Manager* begin, int gcod)
 {
     while (begin != NULL)
@@ -89,10 +120,17 @@ int existManager(Manager* begin, int gcod)
         {
             begin = begin->nextm;
         }
-        return(0);
-    }    
+    }   
+    return 0;
 }
 
+/**
+ * @brief Done
+ * 
+ * @param begin 
+ * @param gcod 
+ * @return Manager* 
+ */
 Manager* removeManager(Manager* begin, int gcod)
 {
     Manager *previous = begin, *actual = begin, *aux;
@@ -118,4 +156,45 @@ Manager* removeManager(Manager* begin, int gcod)
             return(begin);
         }
     }  
+}
+
+/**
+ * @brief Done
+ * 
+ * @param begin 
+ */
+void contactManager(Manager* begin)
+{
+    while (begin != NULL)
+    {
+        printf("%d;%s;\n",begin->contact, begin->username);
+        begin = begin->nextm;
+    }
+}
+
+/**
+ * @brief Done
+ * 
+ * @param begin 
+ * @param gcod 
+ * @param pass 
+ * @param newusername 
+ * @param newpass 
+ * @return int 
+ */
+int changeManager(Manager* begin, int gcod, char pass[], int newusername[], char newpass[])
+{
+    Manager* actual =begin;
+    while(actual != NULL)
+    {
+        if(actual->gCode == gcod && actual->password == pass)
+        {
+            strcpy(actual->username, newusername);
+            strcpy(actual->password, newpass);
+            printf("Manager info updated sucessfully\n");
+            return 1;
+        }
+        actual = actual->nextm;
+    }
+    return 0;
 }
