@@ -14,6 +14,12 @@
 #include <stdlib.h>
 #include "Header_Files/vehicles.h"
 
+/**
+ * @brief Done
+ * 
+ * @param begin 
+ * @return int 
+ */
 int saveVehicle(Vehicle* begin)
 {
     FILE* fp;
@@ -23,40 +29,55 @@ int saveVehicle(Vehicle* begin)
         Vehicle* aux = begin;
         while (aux != NULL)
         {
-            fprintf(fp, "%d;%s;%f;%f;%f;%s;%d\n", aux->vCode, aux->type, aux->batery, aux->autonomy, aux->price, aux->geocode, aux->state);
+            fprintf(fp, "%d;%s;%f;%f;%f;%s;%d\n", aux->vCode, aux->type, aux->batery, aux->autonomy, aux->price, aux->geocode, aux->state, aux->space);
             aux = aux->nextv;
         }
         fclose(fp);
         return(1);
     }
-    else 
-    {
-        printf("Falha na abertura do ficheiro");
-        return(0);
-    }
+    else return(0);
 }
-
+ 
+/**
+  * @brief Done
+  * 
+  * @return Vehicle* 
+  */
 Vehicle* readVehicles()
 {
     FILE* fp;
-    int cod, stat;
+    int cod, stat, space;
     float prc, bat, aut;
     char tp[50], geo[50];
-
     Vehicle* aux = NULL;
+
     fp = fopen("vehicles.txt", "r");
     if (fp != NULL)
     {
         while(!feof(fp))
-        {fscanf(fp, "%d;%[^;];%f;%f;%f;%[^;];%d\n", &cod, tp, &bat, &aut, &prc, geo, &stat);
-        aux = insertVehicle(aux, cod, tp, bat, aut, prc, geo, stat);
+        {fscanf(fp, "%d;%[^;\n];%f;%f;%f;%[^;\n];%d;%d\n", &cod, tp, &bat, &aut, &prc, geo, &stat, &space);
+        aux = insertVehicle(aux, cod, tp, bat, aut, prc, geo, stat, space);
         }
         fclose(fp);
     }
     return(aux);
 }
 
-Vehicle* insertVehicle(Vehicle* begin, int cod, char tp[], float bat, float aut, float prc, char geo[], int stat)
+/**
+ * @brief Done
+ * 
+ * @param begin 
+ * @param cod 
+ * @param tp 
+ * @param bat 
+ * @param aut 
+ * @param prc 
+ * @param geo 
+ * @param stat 
+ * @param space 
+ * @return Vehicle* 
+ */
+Vehicle* insertVehicle(Vehicle* begin, int cod, char tp[], float bat, float aut, float prc, char geo[], int stat, int space)
 {
     if (!existVehicle(begin, cod))
     {
@@ -70,14 +91,21 @@ Vehicle* insertVehicle(Vehicle* begin, int cod, char tp[], float bat, float aut,
             newVehicle->autonomy = aut;
             strcpy(newVehicle->geocode, geo);
             newVehicle->state = stat;
+            newVehicle->space = space;
             newVehicle->nextv = begin; //update next pointer
             begin = newVehicle; //!!! 
-            return newVehicle; // return new head pointer
         }
-        else return begin; // Return the old head pointer if the vehicle already exists or memory allocation failed
     }
+    return begin; // Return the old head pointer if the vehicle already exists or memory allocation failed
 }
 
+/**
+ * @brief Done
+ * 
+ * @param begin 
+ * @param cod 
+ * @return int 
+ */
 int existVehicle(Vehicle* begin, int cod)
 {
     while (begin != NULL)
@@ -90,64 +118,64 @@ int existVehicle(Vehicle* begin, int cod)
     }
 }
 
+/**
+ * @brief Done
+ * 
+ * @param begin 
+ */
 void listVehicles(Vehicle* begin)
 {while (begin != NULL) 
- {printf("%d -> %s -> %.2f -> %.2f -> %.2f -> %s -> %d\n", begin->vCode, begin->type, begin->batery, begin->autonomy, begin->price, begin->geocode, begin->state);
+ {printf("%d -> %s -> %.2f -> %.2f -> %.2f -> %s -> %d -> %d\n", begin->vCode, begin->type, begin->batery, begin->autonomy, begin->price, begin->geocode, begin->state, begin->space);
   begin = begin->nextv;
  }
 }
 
-
-int countVehicles(Vehicle *begin)
+/**
+ * @brief Done
+ * 
+ * @param begin 
+ */
+void listVehicleDesc(Vehicle* begin) 
 {
-    int c = 0;
-    while(begin!= NULL)
+    Vehicle *x, *y;
+    float i;
+    int change;
+
+    if (begin == NULL) {
+        printf("Linked list is empty\n");
+        return;
+    } 
+    while(change)
     {
-        begin =begin->nextv;
-        c++;
+        change = 0;
+        x = begin;
+        while(x->nextv == NULL)
+        {
+            y = x->nextv;
+            if (x->autonomy < y->autonomy)
+            {
+                i = x->autonomy;
+                x->autonomy = y->autonomy;
+                y->autonomy = i;
+                change = 1;
+            }
+            x = x->nextv;
+        }
     }
-    return c;
+    printf("List of Vehicles: \n\n");
+    while(begin != NULL) {
+        printf("%d -> %s -> %.2f -> %.2f -> %.2f -> %s -> %d -> %d\n", begin->vCode, begin->type, begin->batery, begin->autonomy, begin->price, begin->geocode, begin->state);
+        begin = begin->nextv;
+    }
 }
 
-
-// void listVehicleDesc(Vehicle* begin) 
-// {
-//     if (begin == NULL) {
-//         printf("Linked List is Empty");
-//         return;
-//     } 
-
-//     // // Count the number of vehicles in the list
-//     int n = countVehicles(begin);
-    
-//     // Convert the linked list to an array of pointers to vehicles
-//     Vehicle* arr[n];
-//     Vehicle* curr = begin;
-//     for (int i = 0; i < n; i++) {
-//         arr[i] = curr;
-//         curr = curr->nextv;
-//     }
-    
-//     // Sort the array of pointers using a bubble sort algorithm
-//     for (int i = 0; i < n - 1; i++) {
-//         for (int j = 0; j < n - i - 1; j++) {
-//             if (arr[j]->autonomy < arr[j+1]->autonomy) {
-//                 Vehicle* temp = arr[j];
-//                 arr[j] = arr[j+1];
-//                 arr[j+1] = temp;
-//             }
-//         }
-//     }
-    
-//     // Print the sorted list of vehicles
-//     printf("List of Vehicles: \n\n");
-//     for (int i = 0; i < n; i++) {
-//         printf("%d -> %s -> %f -> %f -> %f -> %s -> %d\n", arr[i]->vCode, arr[i]->type, arr[i]->batery, arr[i]->autonomy, arr[i]->price, arr[i]->geocode, arr[i]->state);
-//         i++;
-//     }
-// }
-
-
+/**
+ * @brief Done
+ * 
+ * @param begin 
+ * @param cod 
+ * @return Vehicle* 
+ */
 Vehicle* removeVehicle(Vehicle* begin, int cod)
 {
     Vehicle *previous = begin, *actual = begin, *aux;
@@ -173,4 +201,84 @@ Vehicle* removeVehicle(Vehicle* begin, int cod)
             return(begin);
         }
     }  
+}
+
+/**
+ * @brief Done
+ * 
+ * @param begin 
+ */
+void seekVehicle(Vehicle* begin)
+{
+    char geo[TAM];
+    int found = 0;
+    printf("Insert the Vehicle's Geocode: \n");
+    scanf("%s", geo);
+
+    while(begin != NULL)
+    {
+        if(strcmp(begin->geocode, geo) == 0)
+        {
+            printf("Vehicle found: Code: %d | State: %d \n", begin->vCode, begin->state);
+            found = 1;
+        }
+        begin = begin->nextv;
+    }
+
+    if(found != 1)
+        printf("Vehicle not found!!");
+}
+
+/**
+ * @brief Done
+ * 
+ * @param begin 
+ * @param cod 
+ * @param tp 
+ * @param bat 
+ * @param aut 
+ * @param prc 
+ * @param geo 
+ * @param stat 
+ * @param spac 
+ * @return int 
+ */
+int changeVehicle(Vehicle* begin, int cod, char tp[], float bat, float aut, float prc, char geo[], int stat, int spac)
+{
+    Vehicle* actual = begin;
+    while(actual != NULL)
+    {
+        if(actual->vCode == cod)
+        {
+            strcpy(actual->type, tp);
+            actual->batery= bat;
+            actual->autonomy = aut;
+            actual->price = prc;
+            strcpy(actual->geocode, geo);
+            actual->state = stat;
+            actual->space = spac;
+            return 1;
+        }
+        actual = actual->nextv;
+    }
+    return 0;
+}
+
+/**
+ * @brief Done
+ * 
+ * @param begin 
+ */
+void freeVehicle(Vehicle* begin)
+{
+    Vehicle* actual = begin;
+    int free = 0;
+    printf("Vehicles free: \n");
+    while (actual != NULL)
+    {
+        if(actual->state == 0)
+            printf("Code: %d | Type: %s | Price : %.2f | Batery: %.2f | Autonomy: %.2f | Geocode: %s\n", 
+                    actual->vCode, actual->type, actual->price, actual->batery, actual->autonomy, actual->geocode);
+        actual = actual->nextv;
+    }
 }

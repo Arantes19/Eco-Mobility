@@ -60,7 +60,7 @@ int main()
     Client* clients = NULL;
     Manager* managers = NULL;
 
-    int op, ccode, nif, cod, mcod, stat, gcod, cont, updt;
+    int op, ccode, nif, cod, mcod, stat, gcod, cont, updt, spac;
     float bal, prc, aut, bat, val;
     char name[TAM], addr[TAM], tp[TAM], mname[TAM], geo[TAM], pass[TAM], geocode[TAM], newadd[TAM];
     do
@@ -117,7 +117,7 @@ int main()
                     scanf("%[^\n]", geo);
                     printf("Vehicle's State: \n");
                     scanf("%d", &stat);
-                        vehicles = insertVehicle(vehicles, cod, tp, bat, aut, prc, geo, stat);
+                        vehicles = insertVehicle(vehicles, cod, tp, bat, aut, prc, geo, stat, spac);
                 break;
             case 8: saveVehicle(vehicles);  break;
             case 9: printf("Vehicles code to remove: ");
