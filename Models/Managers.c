@@ -184,7 +184,7 @@ void contactManager(Manager* begin)
  * @param newpass 
  * @return int 
  */
-int changeManager(Manager* begin, int gcod, char pass[], int newusername[], char newpass[])
+int changeManager(Manager* begin, int gcod, char pass[], char newusername[], char newpass[])
 {
     Manager* actual =begin;
     while(actual != NULL)
