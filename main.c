@@ -28,23 +28,24 @@ int menu()
     printf("4. Remove Client\n");
     printf("5. Change Client\n\n");
 
-    // printf("6. Read Vehicles\n");
-    // printf("7. Insert Vehicle\n");
-    // printf("8. Save Vehicle\n");
-    // printf("9. Remove Vehicle\n");
-    // printf("10. Change Vehicle\n");
-    // printf("11. List Vehicles\n");
-    // printf("12. List Vehicles per Location\n");
-    // printf("13. Register Vehicle\n\n");
+    printf("6. Read Vehicles\n");
+    printf("7. Insert Vehicle\n");
+    printf("8. Save Vehicle\n");
+    printf("9. Remove Vehicle\n");
+    printf("10. Change Vehicle\n");
+    printf("11. List Vehicles\n");
+    printf("12. List Vehicles per Location\n");
+    printf("13. Register Vehicle\n\n");
 
-    // printf("14. Read Managers\n");
-    // printf("15. Insert Manager\n");
-    // printf("16. Save Manager\n");
-    // printf("17. Remove Manager\n");
-    // printf("18. Change Manager\n");
-    // printf("19. Check total clients\n");
-    // printf("20. Check total vehicles\n");
-    // printf("21. Check Total managers\n");
+    printf("14. Read Managers\n");
+    printf("15. Insert Manager\n");
+    printf("16. Save Manager\n");
+    printf("17. Remove Manager\n");
+    printf("18. Change Manager\n");
+    
+    printf("19. Check total clients\n");
+    printf("20. Check total vehicles\n");
+    printf("21. Check Total managers\n");
     printf("0. Leave\n\n");
 
     printf("Opcao: ");
@@ -60,9 +61,18 @@ int main()
     Client* clients = NULL;
     Manager* managers = NULL;
 
-    int op, ccode, nif, cod, mcod, stat, gcod, cont, updt, spac;
-    float bal, prc, aut, bat, val;
-    char name[TAM], addr[TAM], tp[TAM], mname[TAM], geo[TAM], pass[TAM], geocode[TAM], newadd[TAM];
+    int op, ccode, nif, cod, mcod, gcod, cont, updt;
+    float bal, val;
+    char name[TAM], addr[TAM], mname[TAM], geo[TAM], pass[TAM], newadd[TAM];
+    
+    char type[100];
+    float battery, autonomy, price;
+    char geocode[100];
+    int state, space;
+    
+    char newUsername[100];
+    char newPassword[100];
+
     do
     {
         op = menu();
@@ -84,7 +94,7 @@ int main()
                     scanf("%*c");
                     printf("Client's Geocode: \n");
                     scanf("%[^\n]", geocode);
-                        clients = insertClient(clients, ccode, nif, name, bal, addr, geocode);
+                    clients = insertClient(clients, ccode, nif, name, bal, addr, geocode);
                 break;
             case 3: saveClient(clients);    break;
             case 4: printf("Client's code to remove: ");
@@ -105,28 +115,70 @@ int main()
                     scanf("%d", &cod);
                     scanf("%*c"); 
                     printf("Vehicle's Type: \n");
-                    scanf("%[^\n]", tp);
+                    scanf("%[^\n]", type);
                     printf("Vehicle's Battery: \n");
-                    scanf("%f", &bat);
+                    scanf("%f", &battery);
                     printf("Vehicle's Autonomy: \n");
-                    scanf("%f", &aut);
+                    scanf("%f", &autonomy);
                     printf("Vehicle's Price: \n");
-                    scanf("%f", &prc);
+                    scanf("%f", &price);
                     scanf("%*c");
                     printf("Vehicle's Geocode: \n");
                     scanf("%[^\n]", geo);
                     printf("Vehicle's State: \n");
-                    scanf("%d", &stat);
-                        vehicles = insertVehicle(vehicles, cod, tp, bat, aut, prc, geo, stat, spac);
+                    scanf("%d", &state);
+                    printf("Vehicle's Space: \n");
+                    scanf("%d", &space);
+                        vehicles = insertVehicle(vehicles, cod, type, battery, autonomy, price, geo, state, space);
                 break;
             case 8: saveVehicle(vehicles);  break;
             case 9: printf("Vehicles code to remove: ");
                     scanf("%d", &cod);
                     vehicles = removeVehicle(vehicles, cod);
                 break;
-            case 10: break;
-            //case 11: listVehicle(vehicles); break;
-            case 12: break;
+            case 10: 
+                    printf("Insert the Vehicle's Code you want to update: ");
+                    int vehicleCode;
+                    scanf("%d", &vehicleCode);
+                    getchar(); // Consume newline character
+
+                    printf("Enter the new type: ");
+                    fgets(type, sizeof(type), stdin);
+                    type[strcspn(type, "\n")] = '\0';
+
+                    printf("Enter the new battery capacity: ");
+                    scanf("%f", &battery);
+                    getchar(); // Consume newline character
+
+                    printf("Enter the new autonomy: ");
+                    scanf("%f", &autonomy);
+                    getchar(); // Consume newline character
+
+                    printf("Enter the new price: ");
+                    scanf("%f", &price);
+                    getchar(); // Consume newline character
+
+                    printf("Enter the new geocode: ");
+                    fgets(geocode, sizeof(geocode), stdin);
+                    geocode[strcspn(geocode, "\n")] = '\0';
+
+                    printf("Enter the new state: ");
+                    scanf("%d", &state);
+                    getchar(); // Consume newline character
+
+                    printf("Enter the new space: ");
+                    scanf("%d", &space);
+                    getchar(); // Consume newline character
+
+                    int result = changeVehicle(vehicles, vehicleCode, type, battery, autonomy, price, geocode, state, space);
+                    if (result == 1) {
+                        printf("Vehicle updated successfully.\n");
+                    } else {
+                        printf("Vehicle with code %d not found.\n", vehicleCode);
+                    }
+                break;
+            case 11: listVehicles(vehicles); break;
+            case 12: seekVehicle(vehicles); break;
             case 13: break;
 
             case 14: managers = readManagers();   break;
@@ -144,10 +196,33 @@ int main()
                 break; 
             case 16: saveManager(managers);  break;
             case 17: printf("Manager's Code to remove: ");
-                    scanf("%d",&gcod);
+                    scanf("%d", &gcod);
                     managers = removeManager(managers, gcod);
-                break;  break;
-            case 18:   break;
+                break; 
+            case 18:
+                        printf("Enter the Manager's Geocode: ");
+                        scanf("%d", &gcod);
+                        getchar(); // Consume newline character
+
+                        printf("Enter the current password: ");
+                        fgets(pass, sizeof(pass), stdin);
+                        pass[strcspn(pass, "\n")] = '\0';
+
+                        printf("Enter the new username: ");
+                        fgets(newUsername, sizeof(newUsername), stdin);
+                        newUsername[strcspn(newUsername, "\n")] = '\0';
+
+                        printf("Enter the new password: ");
+                        fgets(newPassword, sizeof(newPassword), stdin);
+                        newPassword[strcspn(newPassword, "\n")] = '\0';
+
+                        int result = changeManager(managers, gcod, pass, newUsername, newPassword);
+                        if (result == 1) {
+                            printf("Manager information updated successfully.\n");
+                        } else {
+                            printf("Manager with geocode %d and provided password not found.\n", gcod);
+                        }
+                break; 
             case 19: listClients(clients); break;
             case 20: listVehicles(vehicles); break;
             case 21: listManagers(managers); break;
