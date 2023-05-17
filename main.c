@@ -15,6 +15,7 @@
 #include "Header_Files/client.h"
 #include "Header_Files/manager.h"
 #include "Header_Files/vehicles.h"
+#include "Header_Files/graph.h"
 
 #define TAM 100
 
@@ -60,6 +61,7 @@ int main()
     Vehicle* vehicles = NULL;
     Client* clients = NULL;
     Manager* managers = NULL;
+    Graph g = NULL;
 
     int op, ccode, nif, cod, mcod, gcod, cont, updt;
     float bal, val;
@@ -170,8 +172,8 @@ int main()
                     scanf("%d", &space);
                     getchar(); // Consume newline character
 
-                    int result = changeVehicle(vehicles, vehicleCode, type, battery, autonomy, price, geocode, state, space);
-                    if (result == 1) {
+                    int resultv = changeVehicle(vehicles, vehicleCode, type, battery, autonomy, price, geocode, state, space);
+                    if (resultv == 1) {
                         printf("Vehicle updated successfully.\n");
                     } else {
                         printf("Vehicle with code %d not found.\n", vehicleCode);
@@ -216,8 +218,8 @@ int main()
                         fgets(newPassword, sizeof(newPassword), stdin);
                         newPassword[strcspn(newPassword, "\n")] = '\0';
 
-                        int result = changeManager(managers, gcod, pass, newUsername, newPassword);
-                        if (result == 1) {
+                        int resultm = changeManager(managers, gcod, pass, newUsername, newPassword);
+                        if (resultm == 1) {
                             printf("Manager information updated successfully.\n");
                         } else {
                             printf("Manager with geocode %d and provided password not found.\n", gcod);
