@@ -29,7 +29,7 @@ int saveManager(Manager* begin)
         Manager* aux = begin;
         while (aux !=NULL)
         {
-            fprintf(fp, "%d;%s;%d;%s\n", aux->gCode, aux->password, aux->contact, aux->username);
+            fprintf(fp, "%d;%s;%d;%s\n", aux->mCode, aux->password, aux->contact, aux->username);
             aux = aux->nextm;
         }
         fclose(fp);
@@ -51,7 +51,7 @@ void listManagers(Manager* begin)
 {
     while (begin != NULL) 
     {
-        printf("%d -> %s -> %d -> %s\n", begin->gCode, begin->password, begin->contact, begin->username);
+        printf("%d -> %s -> %d -> %s\n", begin->mCode, begin->password, begin->contact, begin->username);
         begin = begin->nextm;
     }
 }
@@ -63,7 +63,7 @@ void listManagers(Manager* begin)
 Manager* readManagers()
 {
     FILE* fp;
-    int gcod, cont;
+    int mcod, cont;
     char mname[50], pass[50];
 
     Manager* aux = NULL;
@@ -71,8 +71,8 @@ Manager* readManagers()
     if (fp != NULL)
     {
         while(!feof(fp))
-        {fscanf(fp, "%d;%[^;\n];%d;%[^\n]\n", &gcod, pass, &cont, mname);
-        aux = insertManager(aux, gcod, pass, cont, mname);
+        {fscanf(fp, "%d;%[^;\n];%d;%[^\n]\n", &mcod, pass, &cont, mname);
+        aux = insertManager(aux, mcod, pass, cont, mname);
         }
         fclose(fp);
     }
@@ -83,20 +83,20 @@ Manager* readManagers()
  * @brief Done
  * 
  * @param begin 
- * @param gcod 
+ * @param mcod 
  * @param pass 
  * @param cont 
  * @param mname 
  * @return Manager* 
  */
-Manager* insertManager(Manager* begin, int gcod, char pass[], int cont, char mname[])
+Manager* insertManager(Manager* begin, int mcod, char pass[], int cont, char mname[])
 {
-    if (!existManager(begin, gcod))
+    if (!existManager(begin, mcod))
     {
         Manager* newManager = malloc(sizeof(struct manager));
         if (newManager != NULL)
         {
-            newManager->gCode = gcod;
+            newManager->mCode = mcod;
             strcpy(newManager->password, pass);
             newManager->contact = cont;
             strcpy(newManager->username, mname);
@@ -111,14 +111,14 @@ Manager* insertManager(Manager* begin, int gcod, char pass[], int cont, char mna
  * @brief Done
  * 
  * @param begin 
- * @param gcod 
+ * @param mcod 
  * @return int 
  */
-int existManager(Manager* begin, int gcod)
+int existManager(Manager* begin, int mcod)
 {
     while (begin != NULL)
     {
-        if (begin->gCode == gcod) return(1);
+        if (begin->mCode == mcod) return(1);
         {
             begin = begin->nextm;
         }
@@ -130,14 +130,14 @@ int existManager(Manager* begin, int gcod)
  * @brief Done
  * 
  * @param begin 
- * @param gcod 
+ * @param mcod 
  * @return Manager* 
  */
-Manager* removeManager(Manager* begin, int gcod)
+Manager* removeManager(Manager* begin, int mcod)
 {
     Manager *previous = begin, *actual = begin, *aux;
     if (actual == NULL) return(NULL);
-    else if (actual->gCode == gcod)
+    else if (actual->mCode == mcod)
     {
         aux = actual->nextm;
         free(actual);
@@ -145,7 +145,7 @@ Manager* removeManager(Manager* begin, int gcod)
     }
     else
     {
-        while((actual != NULL)&&(actual->gCode!=gcod))
+        while((actual != NULL)&&(actual->mCode!=mcod))
         {
             previous = actual;
             actual = actual->nextm;
@@ -178,18 +178,18 @@ void contactManager(Manager* begin)
  * @brief Done
  * 
  * @param begin 
- * @param gcod 
+ * @param mcod 
  * @param pass 
  * @param newusername 
  * @param newpass 
  * @return int 
  */
-int changeManager(Manager* begin, int gcod, char pass[], char newusername[], char newpass[])
+int changeManager(Manager* begin, int mcod, char pass[], char newusername[], char newpass[])
 {
     Manager* actual =begin;
     while(actual != NULL)
     {
-        if(actual->gCode == gcod && actual->password == pass)
+        if(actual->mCode == mcod && actual->password == pass)
         {
             strcpy(actual->username, newusername);
             strcpy(actual->password, newpass);

@@ -61,7 +61,7 @@ int main()
     Vehicle* vehicles = NULL;
     Client* clients = NULL;
     Manager* managers = NULL;
-    Graph g = NULL;
+    Graph* g = NULL;
 
     int op, ccode, nif, cod, mcod, gcod, cont, updt;
     float bal, val;

@@ -16,46 +16,49 @@
 
 // Criar um novo vértice
 // Devolve 1 em caso de sucesso ou 0 caso contrário
-int criarVertice(Graph *g, char novoId[])
+int createNode(Graph* g, char novoId[])
 {
-    Graph new = malloc(sizeof(struct registo1));
-    if (new!=NULL)
+    Graph new = malloc(sizeof(struct regist1));
+    if (new != NULL)
     {
-        strcpy(new->vertice,novoId);
+        strcpy(new->node, novoId);
         new->vehicles = NULL;
         new->nextr = *g;
         *g = new;
-        return(1);
+        return 1;
     }
-    else return(0);
+    else
+    {
+        return 0;
+    }
 }
 
 // Devolve 1 se o vertice existe no grafo ou 0 caso contrário
-int existeVertice(Graph g, char vertice[])
+int existNode(Graph g, char node[])
 {
-    while (g!=NULL)
+    while (g != NULL)
     {
-        if (strcmp(g->vertice,vertice)==0) return(1);
-    else g=g->nextr;
+        if (strcmp(g->node, node) == 0) return(1);
+    else g = g->nextr;
     }
     return(0);
 }
 
 // Criar uma nova aresta
 // Devolve 1 em caso de sucesso ou 0 caso contrário
-int criarAresta(Graph g, char vOrigem[], char vDestino[], float weight)
+int createEdge(Graph g, char nodeOrigin[], char nodeDestiny[], float weight)
 {
-    Adjacent new;
-    if (existeVertice(g,vOrigem) && existeVertice(g,vDestino))
+    Edge new;
+    if (existNode(g, nodeOrigin) && existNode(g, nodeDestiny))
     {
-        while(strcmp(g->vertice,vOrigem)!=0) g=g->nextr;
-        new = malloc(sizeof(struct registo1));
-        if (new!=NULL)
+        while(strcmp(g->node, nodeOrigin)!=0) g = g->nextr;
+        new = malloc(sizeof(struct regist1));
+        if (new != NULL)
 	    {
-            strcpy(new->vertice,vDestino);
+            strcpy(new->node, nodeDestiny);
             new->weight = weight;
-            new->nextr=g->adjacents;
-            g->adjacents=new;
+            new->nextr = g->edges;
+            g->edges = new;
             return(1);
 	    }
     else return(0);
@@ -64,32 +67,32 @@ int criarAresta(Graph g, char vOrigem[], char vDestino[], float weight)
 }
 
 // Listar os vértices adjacentes 
-void listarAdjacentes(Graph g, char vertice[])
+void listAdjacents(Graph g, char node[])
 {
-    Adjacent aux;
-    if (existeVertice(g,vertice))
+    Edge aux;
+    if (existNode(g, node))
     {
-        while (strcmp(g->vertice,vertice)!=0) g=g->nextr;
-        aux = g->adjacents;
-        while (aux!=NULL) 
+        while (strcmp(g->node,node)!= 0) g = g->nextr;
+        aux = g->edges;
+        while (aux != NULL) 
         {
-            printf("Adjacente:%s Peso:%.2f\n", aux->vertice, aux->weight);
-            aux=aux->nextr;
+            printf("Adjacente:%s Peso:%.2f\n", aux->node, aux->weight);
+            aux = aux->nextr;
         }
     }
 }
 
 // Inserir meio de transporte na localização com geocódigo passado por parâmetro
 // Devolve 1 em caso de sucesso ou 0 caso contrário
-int inserirMeio(Graph g, char geocodigo[], int codigoMeio)
+int insertVehicleGraph(Graph g, char geocode[], int vehicleCode)
 {
-    while ((g!=NULL)&&(strcmp(g->vertice,geocodigo)!=0))
-	g=g->nextr;
-    if (g==NULL) return(0);
+    while ((g!=NULL)&&(strcmp(g->node, geocode)!=0))
+	g = g->nextr;
+    if (g == NULL) return(0);
     else 
         {
             Vehicles new = malloc(sizeof(struct regist3));
-            new->code = codigoMeio;
+            new->code = vehicleCode;
             new->nextr = g->vehicles;
             g->vehicles = new;
             return(1);	 
@@ -97,15 +100,15 @@ int inserirMeio(Graph g, char geocodigo[], int codigoMeio)
 }
 
 // Listar os códigos dos meios de transporte presente numa determinada localização passada por parâmetro
-void listarMeios(Graph g, char geocodigo[])
+void listVehiclesGraph(Graph g, char geocode[])
 {
- while ((g!=NULL)&&(strcmp(g->vertice,geocodigo)!=0))
-	g=g->nextr;
-    if (g!=NULL) 
+ while ((g != NULL) && (strcmp(g->node, geocode) !=0 ))
+	g = g->nextr;
+    if (g != NULL) 
     {
-        Vehicles aux=g->vehicles;
-        if (aux==NULL) printf("sem meios de transporte\n");
-        else while(aux!=NULL)
+        Vehicles aux = g->vehicles;
+        if (aux == NULL) printf("sem meios de transporte\n");
+        else while(aux != NULL)
         {
             printf("Codigo meio: %d\n", aux->code);
             aux = aux->nextr;

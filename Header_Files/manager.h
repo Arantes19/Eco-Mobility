@@ -3,7 +3,7 @@
 
 typedef struct manager
 {
-    int gCode;
+    int mCode;
     char password[TAM];
     int contact;
     char username[TAM];
@@ -11,11 +11,11 @@ typedef struct manager
 }Manager;
 
 //Manager sub-rotines
-Manager* insertManager(Manager* begin, int gcod, char pass[], int cont, char mname[]);
+Manager* insertManager(Manager* begin, int mcod, char pass[], int cont, char mname[]);
 Manager* readManagers();
 int saveManager(Manager* begin);
-int existManager(Manager* begin, int gcod);
-Manager* removeManager(Manager* begin, int gcod);
+int existManager(Manager* begin, int mcod);
+Manager* removeManager(Manager* begin, int mcod);
 void listManagers(Manager* begin);
 void contactManager(Manager* begin);
-int changeManager(Manager* begin, int gcod, char pass[], char newusername[], char newpass[]);
+int changeManager(Manager* begin, int mcod, char pass[], char newusername[], char newpass[]);

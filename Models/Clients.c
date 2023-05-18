@@ -205,6 +205,6 @@ Client* chargeBalance(Client *begin, int ccod, float value)
         }
         client = client->nextc;
     }
-    printf("Cliente nÃo encontrado.\n");
+    printf("Cliente não encontrado.\n");
     return NULL;
 }
