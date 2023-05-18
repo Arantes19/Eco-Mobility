@@ -10,7 +10,7 @@
  */
 
 #include <stdio.h>
-#define TAM 100
+#define TAM 250
 
 typedef struct vehicle
 {
@@ -22,13 +22,14 @@ typedef struct vehicle
     char geocode[TAM];
     int state;
     int space;
+    float vweight;
     struct vehicle* nextv; 
 }Vehicle;
 
 //Vehicle sub-rotines
 Vehicle* insertVehicle(Vehicle* begin, int cod, char tp[], float bat, float aut, float prc, char geo[], int stat, int space);
 Vehicle* readVehicles();
-int saveVehicle(Vehicle* begin);
+int saveVehicle(Vehicle* begin);  
 int existVehicle(Vehicle* begin, int cod);
 Vehicle* removeVehicle(Vehicle* begin, int cod);
 void listVehicles(Vehicle* begin);

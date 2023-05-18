@@ -1,5 +1,5 @@
 #include <stdio.h>
-#define TAM 100
+#define TAM 250
 
 typedef struct manager
 {

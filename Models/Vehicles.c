@@ -29,7 +29,7 @@ int saveVehicle(Vehicle* begin)
         Vehicle* aux = begin;
         while (aux != NULL)
         {
-            fprintf(fp, "%d;%s;%f;%f;%f;%s;%d\n", aux->vCode, aux->type, aux->batery, aux->autonomy, aux->price, aux->geocode, aux->state, aux->space);
+            fprintf(fp, "%d;%s;%f;%f;%f;%s;%d;%d;\n", aux->vCode, aux->type, aux->batery, aux->autonomy, aux->price, aux->geocode, aux->state, aux->space);
             aux = aux->nextv;
         }
         fclose(fp);
@@ -48,14 +48,14 @@ Vehicle* readVehicles()
     FILE* fp;
     int cod, stat, space;
     float prc, bat, aut;
-    char tp[50], geo[50];
+    char tp[100], geo[100];
+    
     Vehicle* aux = NULL;
-
     fp = fopen("Text_Files/vehicles.txt", "r");
     if (fp != NULL)
     {
         while(!feof(fp))
-        {fscanf(fp, "%d;%[^;\n];%f;%f;%f;%[^;\n];%d;%d\n", &cod, tp, &bat, &aut, &prc, geo, &stat, &space);
+        {fscanf(fp, "%d;%[^;];%f;%f;%f;%[^;];%d;%d;\n", &cod, tp, &bat, &aut, &prc, geo, &stat, &space);
         aux = insertVehicle(aux, cod, tp, bat, aut, prc, geo, stat, space);
         }
         fclose(fp);
@@ -93,7 +93,7 @@ Vehicle* insertVehicle(Vehicle* begin, int cod, char tp[], float bat, float aut,
             newVehicle->state = stat;
             newVehicle->space = space;
             newVehicle->nextv = begin; //update next pointer
-            begin = newVehicle; //!!! 
+            begin = newVehicle;
         }
     }
     return begin; // Return the old head pointer if the vehicle already exists or memory allocation failed
@@ -111,11 +111,9 @@ int existVehicle(Vehicle* begin, int cod)
     while (begin != NULL)
     {
         if (begin->vCode == cod) return 1;
-        {
             begin = begin->nextv;
-        }
-        return 0;
     }
+    return 0;
 }
 
 /**
@@ -125,7 +123,7 @@ int existVehicle(Vehicle* begin, int cod)
  */
 void listVehicles(Vehicle* begin)
 {while (begin != NULL) 
- {printf("%d -> %s -> %.2f -> %.2f -> %.2f -> %s -> %d -> %d\n", begin->vCode, begin->type, begin->batery, begin->autonomy, begin->price, begin->geocode, begin->state, begin->space);
+ {printf("%d -> %s -> %.2f -> %.2f -> %.2f -> %s -> %d -> %d ->\n", begin->vCode, begin->type, begin->batery, begin->autonomy, begin->price, begin->geocode, begin->state, begin->space);
   begin = begin->nextv;
  }
 }
@@ -164,7 +162,7 @@ void listVehicleDesc(Vehicle* begin)
     }
     printf("List of Vehicles: \n\n");
     while(begin != NULL) {
-        printf("%d -> %s -> %.2f -> %.2f -> %.2f -> %s -> %d -> %d\n", begin->vCode, begin->type, begin->batery, begin->autonomy, begin->price, begin->geocode, begin->state);
+        printf("%d -> %s -> %.2f -> %.2f -> %.2f -> %s -> %d -> %d\n", begin->vCode, begin->type, begin->batery, begin->autonomy, begin->price, begin->geocode, begin->state, begin->space);
         begin = begin->nextv;
     }
 }

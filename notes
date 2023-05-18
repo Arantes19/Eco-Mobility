@@ -1,1 +1,36 @@
-Sync main with .c files and F1 is done.
+Graph draft
+                        node
+                          |  
+                          | Edge
+                          |                      
+                        node
+                      /      \
+                Edge /        \  Edge
+                    /          \
+                   /            \
+                node             node
+                /   \             \ 
+        Edge   /     \  Edge       \  Edge 
+              /       \             \ 
+            node      node          node
+
+each node of the graph:
+ - geocode of the node
+ - vehicle associate can be null
+ - client associate can be null
+ - edge associate can be null
+
+each edge of the graph:
+ - geocode of the node connected
+ - weight associate
+
+each vehicle of the graph:
+ - vehicle code associated
+ - vehicle geocode 
+ - vehicle type
+ - vehicle batery
+ - vehicle weight
+
+each client of the graph:
+ - client code associated
+ - client geocode

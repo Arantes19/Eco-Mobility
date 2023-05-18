@@ -14,26 +14,36 @@
 #include <stdlib.h>
 #include "../Header_Files/graph.h"
 
-// Criar um novo vértice
-// Devolve 1 em caso de sucesso ou 0 caso contrário
-int createNode(Graph* g, char novoId[])
+/**
+ * @brief Create a Node object
+ * 
+ * @param g 
+ * @param nodeId 
+ * @return int 
+ */
+int createNode(Graph *g, char nodeId[])
 {
     Graph new = malloc(sizeof(struct regist1));
     if (new != NULL)
     {
-        strcpy(new->node, novoId);
+        strcpy(new->node, nodeId);
         new->vehicles = NULL;
+        new->clients = NULL;   
+        new->edges = NULL;
         new->nextr = *g;
         *g = new;
         return 1;
     }
-    else
-    {
-        return 0;
-    }
+    else return 0;
 }
 
-// Devolve 1 se o vertice existe no grafo ou 0 caso contrário
+/**
+ * @brief Verify is the node given exists
+ * 
+ * @param g 
+ * @param node 
+ * @return int 
+ */
 int existNode(Graph g, char node[])
 {
     while (g != NULL)
@@ -44,15 +54,22 @@ int existNode(Graph g, char node[])
     return(0);
 }
 
-// Criar uma nova aresta
-// Devolve 1 em caso de sucesso ou 0 caso contrário
+/**
+ * @brief Create a Edge object
+ * 
+ * @param g 
+ * @param nodeOrigin 
+ * @param nodeDestiny 
+ * @param weight 
+ * @return int 
+ */
 int createEdge(Graph g, char nodeOrigin[], char nodeDestiny[], float weight)
 {
     Edge new;
     if (existNode(g, nodeOrigin) && existNode(g, nodeDestiny))
     {
-        while(strcmp(g->node, nodeOrigin)!=0) g = g->nextr;
-        new = malloc(sizeof(struct regist1));
+        while(strcmp(g->node, nodeOrigin) !=0 ) g = g->nextr;
+        new = malloc(sizeof(struct regist2));
         if (new != NULL)
 	    {
             strcpy(new->node, nodeDestiny);
@@ -66,53 +83,258 @@ int createEdge(Graph g, char nodeOrigin[], char nodeDestiny[], float weight)
     else return(0);
 }
 
-// Listar os vértices adjacentes 
-void listAdjacents(Graph g, char node[])
+/**
+ * @brief List all the edges
+ * 
+ * @param g 
+ * @param node 
+ */
+void listEdges(Graph g, char node[])
 {
     Edge aux;
     if (existNode(g, node))
     {
-        while (strcmp(g->node,node)!= 0) g = g->nextr;
+        while (strcmp(g->node,node) != 0) g = g->nextr;
         aux = g->edges;
         while (aux != NULL) 
         {
-            printf("Adjacente:%s Peso:%.2f\n", aux->node, aux->weight);
+            printf("Edge: %s | Weight: %.2f\n", aux->node, aux->weight);
             aux = aux->nextr;
         }
     }
 }
 
-// Inserir meio de transporte na localização com geocódigo passado por parâmetro
-// Devolve 1 em caso de sucesso ou 0 caso contrário
-int insertVehicleGraph(Graph g, char geocode[], int vehicleCode)
+/**
+ * @brief Insert a vehicle giving the vehicle geocode in the node of graph with the same geocode 
+ * 
+ * @param g 
+ * @param geocode 
+ * @param vehicleCode 
+ * @param tp 
+ * @param bat 
+ * @param weight 
+ * @return int 
+ */
+int insertVehicleGraph(Graph g, char geocode[], int vehicleCode, char tp[], float bat, float weight)
 {
-    while ((g!=NULL)&&(strcmp(g->node, geocode)!=0))
+    while ((g != NULL) && (strcmp(g->node, geocode) != 0))
 	g = g->nextr;
     if (g == NULL) return(0);
     else 
         {
-            Vehicles new = malloc(sizeof(struct regist3));
-            new->code = vehicleCode;
+            VehicleG new = malloc(sizeof(struct regist3));
+            new->vcode = vehicleCode;
+            strcpy(new->geocode, geocode); 
+            strcpy(new->type, tp); 
+            new->batery = bat;
+            new->weight = weight;
             new->nextr = g->vehicles;
             g->vehicles = new;
             return(1);	 
-      }
+        }
 }
 
-// Listar os códigos dos meios de transporte presente numa determinada localização passada por parâmetro
-void listVehiclesGraph(Graph g, char geocode[])
+/**
+ * @brief Insert a client giving the client geocode in the node of graph with the same geocode 
+ * 
+ * @param g 
+ * @param geocode 
+ * @param clientCode 
+ * @return int 
+ */
+int insertClientGraph(Graph g, char geocode[], int clientCode)
 {
- while ((g != NULL) && (strcmp(g->node, geocode) !=0 ))
+    while ((g != NULL) && (strcmp(g->node, geocode) != 0))
 	g = g->nextr;
-    if (g != NULL) 
-    {
-        Vehicles aux = g->vehicles;
-        if (aux == NULL) printf("sem meios de transporte\n");
-        else while(aux != NULL)
+    if (g == NULL) return(0);
+    else 
         {
-            printf("Codigo meio: %d\n", aux->code);
+            ClientG new = malloc(sizeof(struct regist4));
+            new->ccode = clientCode;
+            new->nextr = g->clients;
+            g->clients = new;
+            return(1);	 
+        }
+}
+
+
+// // Listar os códigos dos meios de transporte presente numa determinada localização passada por parâmetro
+// void listVehiclesGraph(Graph g, char geocode[])
+// {
+//  while ((g != NULL) && (strcmp(g->node, geocode) !=0 ))
+// 	g = g->nextr;
+//     if (g != NULL) 
+//     {
+//         Vehicle aux = g->vehicles;
+//         if (aux == NULL) printf("sem meios de transporte\n");
+//         else while(aux != NULL)
+//         {
+//             printf("Codigo meio: %d\n", aux->vCode);
+//             aux = aux->nextr;
+//         }
+//     }
+//     else printf("geocodigo inexistente\n");
+// }
+
+
+void saveNodes(Graph g)
+{
+    FILE* fp = fopen("Text_Files/nodes_graph.txt", "w");
+    if (fp == NULL)
+    {
+           printf("Failed to open the file.\n");
+           return;
+    }
+    while(g != NULL)
+    {
+        fprintf(fp, "%s;\n", g->node);
+        g = g->nextr;
+    }
+    fclose(fp);
+}
+
+void saveVehiclesGraph(Graph g)
+{
+    FILE* fp = fopen("Text_Files/vehicles_graph.txt", "w");
+    if (fp == NULL)
+    {
+           printf("Failed to open the file.\n");
+           return;
+    }
+    while(g != NULL)
+    {
+        fprintf(fp, "Vehicle's Geocode: %s\n", g->node);
+        VehicleG aux = g->vehicles;
+        while (aux != NULL)
+        {
+            fprintf(fp, "%d;%f;%f;\n", aux->vcode, aux->batery, aux->space);
             aux = aux->nextr;
         }
+        g = g->nextr;
     }
-    else printf("geocodigo inexistente\n");
+    fclose(fp);
 }
+
+
+void saveClientsGraph(Graph g)
+{
+    FILE* fp = fopen("Text_Files/clients_graph.txt", "w");
+    if (fp == NULL)
+    {
+           printf("Failed to open the file.\n");
+           return;
+    }
+    while(g != NULL)
+    {
+        fprintf(fp, "Clients's Geocode: %s\n", g->node);
+        ClientG aux = g->clients;
+        while (aux != NULL)
+        {
+            fprintf(fp, "%d;\n", aux->ccode);
+            aux = aux->nextr;
+        }
+        g = g->nextr;
+    }
+    fclose(fp);
+}
+
+void saveEdgeGraph(Graph g)
+{
+    FILE* fp = fopen("Text_Files/edge_graph.txt", "w");
+    if (fp == NULL)
+    {
+           printf("Failed to open the file.\n");
+           return;
+    }
+    while(g != NULL)
+    {
+        fprintf(fp, "Edge's Node: %s\n", g->node);
+        Edge aux = g->edges;
+        while (aux != NULL)
+        {
+            fprintf(fp, "%s;%f;\n", aux->node, aux->weight);
+            aux = aux->nextr;
+        }
+        g = g->nextr;
+    }
+    fclose(fp);
+}
+
+
+Graph readNodes(Graph g)
+{
+    FILE* fp;
+    char node[250];
+
+    Graph* aux = NULL;
+    fp = fopen("Text_Files/nodes_graph.txt", "r");
+    if(fp != NULL)
+    {
+        while(!feof(fp))
+        {
+            fscanf(fp, "%[^;];\n", node); 
+        }
+        fclose(fp);
+    }
+    return(aux);
+}
+
+
+Graph readVehiclesGraph(Graph g)
+{
+    FILE* fp;
+    int vcode;
+    float bat, space;
+
+    VehicleG* aux = NULL;
+    fp = fopen("Text_Files/vehicles_graph.txt", "r");
+    if(fp != NULL)
+    {
+        while(!feof(fp))
+        {
+            fscanf(fp, "%d;%f;%f;\n", &vcode, &bat, &space);
+            // !?
+        }
+        fclose(fp);
+    }
+    return(aux);
+}
+
+
+Graph readClientsGraph(Graph g)
+{
+    FILE* fp;
+    int ccode;
+
+    ClientG* aux = NULL;
+    fp = fopen("Text_Files/clients_graph.txt", "r");
+    if(fp != NULL)
+    {
+        while(!feof(fp))
+        {
+            fscanf(fp, "%d;\n", &ccode);
+        }
+        fclose(fp);
+    }
+    return(aux);
+}
+
+Graph readNodes(Graph g)
+{
+    FILE* fp;
+    char nodeO[250], nodeD[250];
+    float weight;
+
+    Graph* aux = NULL;
+    fp = fopen("Text_Files/nodes_graph.txt", "r");
+    if(fp != NULL)
+    {
+        while(!feof(fp))
+        {
+            fscanf(fp, "%[^;];%[^;];%f;\n", nodeO, nodeD, &weight);
+        }
+        fclose(fp);
+    }
+    return(aux);
+}
+

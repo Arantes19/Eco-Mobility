@@ -13,11 +13,11 @@
 #include <stdlib.h>
 #include <string.h>
 #include "Header_Files/client.h"
-#include "Header_Files/manager.h"
 #include "Header_Files/vehicles.h"
+#include "Header_Files/manager.h"
 #include "Header_Files/graph.h"
 
-#define TAM 100
+#define TAM 250
 
 int menu()
 {
@@ -34,7 +34,7 @@ int menu()
     printf("8. Save Vehicle\n");
     printf("9. Remove Vehicle\n");
     printf("10. Change Vehicle\n");
-    printf("11. List Vehicles\n");
+    printf("11. List Vehicles Descendent Order\n");
     printf("12. List Vehicles per Location\n");
     printf("13. Register Vehicle\n\n");
 
@@ -47,6 +47,9 @@ int menu()
     printf("19. Check total clients\n");
     printf("20. Check total vehicles\n");
     printf("21. Check Total managers\n");
+
+    printf("22. Read data from graph file\n");
+    printf("23. Save data on graph file\n");
     printf("0. Leave\n\n");
 
     printf("Opcao: ");
@@ -63,6 +66,20 @@ int main()
     Manager* managers = NULL;
     Graph* g = NULL;
 
+    //Create graph
+    createNode(g, "Braga");
+    createNode(g, "Porto");
+    createNode(g, "Lisboa");
+    // createEdge(g, "Braga", "Porto", 50.0);
+    // createEdge(g, "Braga", "Lisboa", 390.0);
+    insertVehicleGraph(g, "Braga", 1, "Car", 80.0, 100.0);
+    insertVehicleGraph(g, "Porto", 2, "Car", 50.0, 500.0);
+    insertVehicleGraph(g, "Lisboa", 3, "Car", 50.0, 3000.0);
+    insertClientGraph(g, "Braga", 1);
+    insertClientGraph(g, "Porto", 2);
+    insertClientGraph(g, "Lisboa", 2);
+
+
     int op, ccode, nif, cod, mcod, gcod, cont, updt;
     float bal, val;
     char name[TAM], addr[TAM], mname[TAM], geo[TAM], pass[TAM], newadd[TAM];
@@ -74,6 +91,7 @@ int main()
     
     char newUsername[100];
     char newPassword[100];
+
 
     do
     {
@@ -137,7 +155,7 @@ int main()
                     scanf("%d", &state);
                     printf("Vehicle's Space: \n");
                     scanf("%d", &space);
-                        vehicles = insertVehicle(vehicles, cod, type, battery, autonomy, price, geo, state, space);
+                    vehicles = insertVehicle(vehicles, cod, type, battery, autonomy, price, geo, state, space);
                 break;
             case 8: saveVehicle(vehicles);  break;
             case 9: printf("Vehicles code to remove: ");
@@ -185,7 +203,7 @@ int main()
                         printf("Vehicle with code %d not found.\n", vehicleCode);
                     }
                 break;
-            case 11: listVehicles(vehicles); break;
+            case 11: listVehicleDesc(vehicles); break;
             case 12: seekVehicle(vehicles); break;
             case 13: break;
 
@@ -234,6 +252,8 @@ int main()
             case 19: listClients(clients); break;
             case 20: listVehicles(vehicles); break;
             case 21: listManagers(managers); break;
+            case 22: break;
+            case 23: saveGraph(g); break;
             default: 
                 break;
         }

@@ -1,6 +1,8 @@
 {
     "files.associations": {
         "stdlib.h": "c",
-        "client.h": "c"
+        "client.h": "c",
+        "vehicles.h": "c",
+        "graph.h": "c"
     }
 }
