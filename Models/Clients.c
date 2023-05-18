@@ -25,12 +25,13 @@ int existClient(Client* begin, int ccode)
 {
     while (begin != NULL)
     {
-        if (begin->cCode == ccode) return(1);
+        if (begin->cCode == ccode)
         {
-            begin = begin->nextc;
+            return 1;
         }
-        return(0);
+        begin = begin->nextc;
     }
+    return 0;
 }
 
 /**
@@ -43,12 +44,12 @@ int saveClient(Client* begin)
 {
     FILE* fp;
     fp = fopen("Text_Files/clients.txt", "w");
-    if (fp!=NULL)
+    if (fp != NULL)
     {
         Client* aux = begin;
-        while (aux !=NULL)
+        while (aux != NULL)
         {
-            fprintf(fp, "%d;%d;%s;%f;%s;%s\n",aux->cCode, aux->nif, aux->name, aux->balance, aux->address, aux->geocode);
+            fprintf(fp, "%d;%d;%s;%f;%s;%s;\n",aux->cCode, aux->nif, aux->name, aux->balance, aux->address, aux->geocode);
             aux = aux->nextc;
         }
         fclose(fp);
@@ -74,7 +75,7 @@ Client* readClients()
     if (fp != NULL)
     {
         while(!feof(fp))
-        {fscanf(fp, "%d;%d;%[^\n]s;%f;%[^\n]s;%[^\n]s\n", &ccode, &nif, name, &bal, addr, geocode);
+        {fscanf(fp, "%d;%d;%[^;];%f;%[^;];%[^;];\n", &ccode, &nif, name, &bal, addr, geocode);
         aux = insertClient(aux, ccode, nif, name, bal, addr, geocode);
         }
         fclose(fp);
@@ -154,10 +155,12 @@ Client* removeClient(Client* begin, int ccode)
  * @param begin 
  */
 void listClients(Client* begin)
-{while (begin != NULL) 
- {printf("%d -> %d -> %s -> %.2f -> %s -> %s\n", begin->cCode, begin->nif, begin->name, begin->balance, begin->address, begin->geocode);
-  begin = begin->nextc;
- }
+{
+    while (begin != NULL) 
+    {
+        printf("%d -> %d -> %s -> %.2f -> %s -> %s\n", begin->cCode, begin->nif, begin->name, begin->balance, begin->address, begin->geocode);
+        begin = begin->nextc;
+    }
 }
 
 /**
@@ -177,7 +180,9 @@ int UpdateClients(Client* begin, int ccode, int nif, char newaddress[])
         if(actual->cCode == ccode && actual->nif == nif)
         {
             strcpy(actual->address, newaddress);
+            printf("Client updated sucessfully!\n");
             return 1;
+            
         }
         actual= actual->nextc;
     }

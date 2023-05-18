@@ -1,1 +1,3 @@
-1;254140888;Francisco;1232.000000;Braga;Amares
+1;254140888;Francisco;1542.921143;Ferreiros;Braga;
+2;254132333;Guilherme;2312.123291;SaoVincente;Braga;
+3;254140123;Luis;1234.212036;Famalicao;Braga;

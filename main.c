@@ -108,8 +108,14 @@ int main()
                     printf("Insert the Client's NIF you want to update: ");
                     scanf("%d", &nif);
                     printf("Insert the Client's new Address you want to update: ");
-                    scanf("%d", &newadd);
-                    UpdateClients(clients, ccode, nif, newadd);
+                    scanf("%s", &newadd);
+                    int result = UpdateClients(clients, ccode, nif, newadd);
+                    if (result == 1) {
+                        printf("Client updated successfully!\n");
+                    } else {
+                        printf("Failed to update client. Client not found.\n");
+                    }
+                
                 break;
             
             case 6: vehicles = readVehicles();   break;
