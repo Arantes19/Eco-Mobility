@@ -1,6 +1,3 @@
-Clients's Geocode: Lisboa
-2;
-Clients's Geocode: Porto
-2;
-Clients's Geocode: Braga
-1;
+Lisboa->2;
+Porto->2;
+Braga->1;

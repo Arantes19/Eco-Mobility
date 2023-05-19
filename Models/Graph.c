@@ -189,7 +189,7 @@ void saveVehiclesGraph(Graph g)
     }
     while(g != NULL)
     {
-        fprintf(fp, "Vehicle's Geocode: %s\n", g->node);
+        fprintf(fp, "%s->", g->node);
         VehicleG aux = g->vehicles;
         while (aux != NULL)
         {
@@ -211,7 +211,7 @@ void saveClientsGraph(Graph g)
     }
     while(g != NULL)
     {
-        fprintf(fp, "Clients's Geocode: %s\n", g->node);
+        fprintf(fp, "%s->", g->node);
         ClientG aux = g->clients;
         while (aux != NULL)
         {
@@ -238,7 +238,7 @@ void saveEdgeGraph(Graph g)
     }
     while(g != NULL)
     {
-        fprintf(fp, "Edge's Node: %s\n", g->node);
+        fprintf(fp, "%s->", g->node);
         Edge aux = g->edges; 
         printf("%s -> ", aux);
         while (aux != NULL)
@@ -273,16 +273,17 @@ Graph readVehiclesGraph(Graph g)
 {
     FILE* fp;
     int vcode;
-    float bat, space;
+    float bat, space, weight;
+    char node[250], type[100];
 
+    Graph* auxg = NULL;
     VehicleG* aux = NULL;
     fp = fopen("Text_Files/vehicles_graph.txt", "r");
     if(fp != NULL)
     {
         while(!feof(fp))
         {
-            fscanf(fp, "%d;%f;%f;\n", &vcode, &bat, &space);
-            // !?
+            fscanf(fp, "%s->%d;%s;%f;%f;\n",node, &vcode, type, &bat, &weight, &space);
         }
         fclose(fp);
     }
@@ -293,14 +294,16 @@ Graph readClientsGraph(Graph g)
 {
     FILE* fp;
     int ccode;
+    char node[250];
 
+    Graph* auxg = NULL;
     ClientG* aux = NULL;
     fp = fopen("Text_Files/clients_graph.txt", "r");
     if(fp != NULL)
     {
         while(!feof(fp))
         {
-            fscanf(fp, "%d;\n", &ccode);
+            fscanf(fp, "%s->%d;\n", node, &ccode);
         }
         fclose(fp);
     }
@@ -319,7 +322,7 @@ Graph readEdges(Graph g)
     {
         while(!feof(fp))
         {
-            fscanf(fp, "%[^;];%[^;];%f;\n", nodeO, nodeD, &weight);
+            fscanf(fp, "%[^->]->%[^;];%f;\n", nodeO, nodeD, &weight);
         }
         fclose(fp);
     }

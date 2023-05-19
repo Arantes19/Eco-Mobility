@@ -1,7 +1,4 @@
-Edge's Node: Lisboa
-Porto;50.000000;
-Edge's Node: Porto
-Lisboa;390.000000;
-Edge's Node: Braga
-Lisboa;390.000000;
+Lisboa->Porto;50.000000;
+Porto->Lisboa;390.000000;
+Braga->Lisboa;390.000000;
 Porto;50.000000;

@@ -50,6 +50,7 @@ int menu()
 
     printf("22. Read data from graph file\n");
     printf("23. Save data on graph file\n");
+    printf("24. List edges\n");
     printf("0. Leave\n\n");
 
     printf("Opcao: ");
@@ -255,14 +256,17 @@ int main()
             case 19: listClients(clients); break;
             case 20: listVehicles(vehicles); break;
             case 21: listManagers(managers); break;
-            case 22: break;
+            case 22: readNodes(g);
+                     readVehiclesGraph(g);
+                     readClientsGraph(g);
+                     readNodes(g);
+                break;
             case 23: 
-                    // printf("Insira o nome de uma cidade: ");
-                    // scanf("%s", node);
                     saveNodes(g);
                     saveVehiclesGraph(g);
                     saveClientsGraph(g);
                     saveEdgeGraph(g); break;
+            case 24: listEdges(g, "Braga"); break;
             default: 
                 break;
         }
