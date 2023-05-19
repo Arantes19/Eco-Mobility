@@ -64,17 +64,19 @@ int main()
     Vehicle* vehicles = NULL;
     Client* clients = NULL;
     Manager* managers = NULL;
-    Graph* g = NULL;
+    Graph g = NULL;
 
     //Create graph
-    createNode(g, "Braga");
-    createNode(g, "Porto");
-    createNode(g, "Lisboa");
-    // createEdge(g, "Braga", "Porto", 50.0);
-    // createEdge(g, "Braga", "Lisboa", 390.0);
-    insertVehicleGraph(g, "Braga", 1, "Car", 80.0, 100.0);
-    insertVehicleGraph(g, "Porto", 2, "Car", 50.0, 500.0);
-    insertVehicleGraph(g, "Lisboa", 3, "Car", 50.0, 3000.0);
+    createNode(&g, "Braga");
+    createNode(&g, "Porto");
+    createNode(&g, "Lisboa");
+    createEdge(g, "Braga", "Porto", 50.0);
+    createEdge(g, "Braga", "Lisboa", 390.0);
+    createEdge(g, "Lisboa", "Porto", 50.0);
+    createEdge(g, "Porto", "Lisboa", 390.0);
+    insertVehicleGraph(g, "Braga", 1, "Car", 80.0, 100.0, 17);
+    insertVehicleGraph(g, "Porto", 2, "Car", 50.0, 500.0, 16);
+    insertVehicleGraph(g, "Lisboa", 3, "Car", 50.0, 3000.0, 15);
     insertClientGraph(g, "Braga", 1);
     insertClientGraph(g, "Porto", 2);
     insertClientGraph(g, "Lisboa", 2);
@@ -90,7 +92,8 @@ int main()
     int state, space;
     
     char newUsername[100];
-    char newPassword[100];
+    char newPassword[100], node[100];
+
 
 
     do
@@ -253,7 +256,13 @@ int main()
             case 20: listVehicles(vehicles); break;
             case 21: listManagers(managers); break;
             case 22: break;
-            case 23: saveGraph(g); break;
+            case 23: 
+                    // printf("Insira o nome de uma cidade: ");
+                    // scanf("%s", node);
+                    saveNodes(g);
+                    saveVehiclesGraph(g);
+                    saveClientsGraph(g);
+                    saveEdgeGraph(g); break;
             default: 
                 break;
         }

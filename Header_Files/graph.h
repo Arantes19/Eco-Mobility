@@ -50,7 +50,7 @@ int createNode(Graph* g, char nodeId[]);
 int existNode(Graph g, char node[]);
 int createEdge(Graph g, char nodeOrigin[], char nodeDestiny[], float weight);
 void listEdges(Graph g, char node[]);
-int insertVehicleGraph(Graph g, char geocode[], int vehicleCode, char tp[], float bat, float weight);
+int insertVehicleGraph(Graph g, char geocode[], int vehicleCode, char tp[], float bat, float weight, float space);
 int insertClientGraph(Graph g, char geocode[], int clientCode);
 
 void saveNodes(Graph g);

@@ -84,7 +84,7 @@ int createEdge(Graph g, char nodeOrigin[], char nodeDestiny[], float weight)
 }
 
 /**
- * @brief List all the edges
+ * @brief List all the edges of the graph
  * 
  * @param g 
  * @param node 
@@ -115,7 +115,7 @@ void listEdges(Graph g, char node[])
  * @param weight 
  * @return int 
  */
-int insertVehicleGraph(Graph g, char geocode[], int vehicleCode, char tp[], float bat, float weight)
+int insertVehicleGraph(Graph g, char geocode[], int vehicleCode, char tp[], float bat, float weight, float space)
 {
     while ((g != NULL) && (strcmp(g->node, geocode) != 0))
 	g = g->nextr;
@@ -128,6 +128,7 @@ int insertVehicleGraph(Graph g, char geocode[], int vehicleCode, char tp[], floa
             strcpy(new->type, tp); 
             new->batery = bat;
             new->weight = weight;
+            new->space = space;
             new->nextr = g->vehicles;
             g->vehicles = new;
             return(1);	 
@@ -157,26 +158,11 @@ int insertClientGraph(Graph g, char geocode[], int clientCode)
         }
 }
 
-
-// // Listar os códigos dos meios de transporte presente numa determinada localização passada por parâmetro
-// void listVehiclesGraph(Graph g, char geocode[])
-// {
-//  while ((g != NULL) && (strcmp(g->node, geocode) !=0 ))
-// 	g = g->nextr;
-//     if (g != NULL) 
-//     {
-//         Vehicle aux = g->vehicles;
-//         if (aux == NULL) printf("sem meios de transporte\n");
-//         else while(aux != NULL)
-//         {
-//             printf("Codigo meio: %d\n", aux->vCode);
-//             aux = aux->nextr;
-//         }
-//     }
-//     else printf("geocodigo inexistente\n");
-// }
-
-
+/**
+ * @brief Write all the nodes from the graph
+ * 
+ * @param g 
+ */
 void saveNodes(Graph g)
 {
     FILE* fp = fopen("Text_Files/nodes_graph.txt", "w");
@@ -207,14 +193,13 @@ void saveVehiclesGraph(Graph g)
         VehicleG aux = g->vehicles;
         while (aux != NULL)
         {
-            fprintf(fp, "%d;%f;%f;\n", aux->vcode, aux->batery, aux->space);
+            fprintf(fp, "%d;%s;%f;%f;%f\n", aux->vcode, aux->type, aux->batery, aux->weight, aux->space);
             aux = aux->nextr;
         }
         g = g->nextr;
     }
     fclose(fp);
 }
-
 
 void saveClientsGraph(Graph g)
 {
@@ -238,6 +223,11 @@ void saveClientsGraph(Graph g)
     fclose(fp);
 }
 
+/**
+ * @brief Write the all the edges from all the Nodes of the graph
+ * 
+ * @param g 
+ */
 void saveEdgeGraph(Graph g)
 {
     FILE* fp = fopen("Text_Files/edge_graph.txt", "w");
@@ -249,7 +239,8 @@ void saveEdgeGraph(Graph g)
     while(g != NULL)
     {
         fprintf(fp, "Edge's Node: %s\n", g->node);
-        Edge aux = g->edges;
+        Edge aux = g->edges; 
+        printf("%s -> ", aux);
         while (aux != NULL)
         {
             fprintf(fp, "%s;%f;\n", aux->node, aux->weight);
@@ -259,7 +250,6 @@ void saveEdgeGraph(Graph g)
     }
     fclose(fp);
 }
-
 
 Graph readNodes(Graph g)
 {
@@ -276,9 +266,8 @@ Graph readNodes(Graph g)
         }
         fclose(fp);
     }
-    return(aux);
+     return g;
 }
-
 
 Graph readVehiclesGraph(Graph g)
 {
@@ -297,9 +286,8 @@ Graph readVehiclesGraph(Graph g)
         }
         fclose(fp);
     }
-    return(aux);
+    return g;
 }
-
 
 Graph readClientsGraph(Graph g)
 {
@@ -316,17 +304,17 @@ Graph readClientsGraph(Graph g)
         }
         fclose(fp);
     }
-    return(aux);
+    return g;
 }
 
-Graph readNodes(Graph g)
+Graph readEdges(Graph g)
 {
     FILE* fp;
     char nodeO[250], nodeD[250];
     float weight;
 
     Graph* aux = NULL;
-    fp = fopen("Text_Files/nodes_graph.txt", "r");
+    fp = fopen("Text_Files/edges_graph.txt", "r");
     if(fp != NULL)
     {
         while(!feof(fp))
@@ -335,6 +323,6 @@ Graph readNodes(Graph g)
         }
         fclose(fp);
     }
-    return(aux);
+    return g;
 }
 
