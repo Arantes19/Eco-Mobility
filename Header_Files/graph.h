@@ -45,11 +45,11 @@ typedef struct regist1
 {
     char node[TAM]; // geocódigo what3words
     struct regist2 *edges;
-    VehicleG* vehicles; // Lista ligada com os códigos dos meios de transporte existente neste geocódigo
+    VehicleG vehicles; // Lista ligada com os códigos dos meios de transporte existente neste geocódigo
     ClientG clients;
     int state;
     struct regist1 *nextr;
-} *Graph;        
+} *Graph;           
 
 int createNode(Graph* g, char nodeId[]);
 int existNode(Graph g, char node[]);
@@ -70,5 +70,8 @@ Graph readNodes(Graph g);
 
 
 // ClientG verifyClientGeocode(Graph g, char geocode[]);
+Graph findNode(Graph g, char geocode[]);
+Graph findNextNode(Graph g, char geocode[]);
 ClientG verifyClientGeocode(Graph g, char geocode[]);
+void traverseEdgesDFS(Graph node, char type[], float radius, float currentWeight);
 void listVehiclesPerRadius(Graph g, char geocode[], char type[], float radius);

@@ -1,4 +1,5 @@
-Lisboa->Coimbra->Lisboa;200.000000;
+Lisboa->Coimbra;200.000000;
+Coimbra->Lisboa;200.000000;
 Aveiro->Porto->Coimbra;120.000000;
 Aveiro;70.000000;
 Braga->Lisboa;350.000000;
