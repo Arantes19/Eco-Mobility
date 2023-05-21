@@ -13,14 +13,8 @@
 #include <string.h>
 #include <stdlib.h>
 #include "../Header_Files/graph.h"
+#define MAX_VEHICLESG 50
 
-/**
- * @brief Create a Node object
- * 
- * @param g 
- * @param nodeId 
- * @return int 
- */
 int createNode(Graph *g, char nodeId[])
 {
     Graph new = malloc(sizeof(struct regist1));
@@ -37,13 +31,6 @@ int createNode(Graph *g, char nodeId[])
     else return 0;
 }
 
-/**
- * @brief Verify is the node given exists
- * 
- * @param g 
- * @param node 
- * @return int 
- */
 int existNode(Graph g, char node[])
 {
     while (g != NULL)
@@ -54,22 +41,13 @@ int existNode(Graph g, char node[])
     return(0);
 }
 
-/**
- * @brief Create a Edge object
- * 
- * @param g 
- * @param nodeOrigin 
- * @param nodeDestiny 
- * @param weight 
- * @return int 
- */
 int createEdge(Graph g, char nodeOrigin[], char nodeDestiny[], float weight)
 {
     Edge new;
     if (existNode(g, nodeOrigin) && existNode(g, nodeDestiny))
     {
         while(strcmp(g->node, nodeOrigin) !=0 ) g = g->nextr;
-        new = malloc(sizeof(struct regist2));
+        new = malloc(sizeof(struct regist1));
         if (new != NULL)
 	    {
             strcpy(new->node, nodeDestiny);
@@ -83,38 +61,6 @@ int createEdge(Graph g, char nodeOrigin[], char nodeDestiny[], float weight)
     else return(0);
 }
 
-/**
- * @brief List all the edges of the graph
- * 
- * @param g 
- * @param node 
- */
-void listEdges(Graph g, char node[])
-{
-    Edge aux;
-    if (existNode(g, node))
-    {
-        while (strcmp(g->node,node) != 0) g = g->nextr;
-        aux = g->edges;
-        while (aux != NULL) 
-        {
-            printf("Edge: %s | Weight: %.2f\n", aux->node, aux->weight);
-            aux = aux->nextr;
-        }
-    }
-}
-
-/**
- * @brief Insert a vehicle giving the vehicle geocode in the node of graph with the same geocode 
- * 
- * @param g 
- * @param geocode 
- * @param vehicleCode 
- * @param tp 
- * @param bat 
- * @param weight 
- * @return int 
- */
 int insertVehicleGraph(Graph g, char geocode[], int vehicleCode, char tp[], float bat, float weight, float space)
 {
     while ((g != NULL) && (strcmp(g->node, geocode) != 0))
@@ -135,14 +81,6 @@ int insertVehicleGraph(Graph g, char geocode[], int vehicleCode, char tp[], floa
         }
 }
 
-/**
- * @brief Insert a client giving the client geocode in the node of graph with the same geocode 
- * 
- * @param g 
- * @param geocode 
- * @param clientCode 
- * @return int 
- */
 int insertClientGraph(Graph g, char geocode[], int clientCode)
 {
     while ((g != NULL) && (strcmp(g->node, geocode) != 0))
@@ -158,11 +96,6 @@ int insertClientGraph(Graph g, char geocode[], int clientCode)
         }
 }
 
-/**
- * @brief Write all the nodes from the graph
- * 
- * @param g 
- */
 void saveNodes(Graph g)
 {
     FILE* fp = fopen("Text_Files/nodes_graph.txt", "w");
@@ -223,11 +156,6 @@ void saveClientsGraph(Graph g)
     fclose(fp);
 }
 
-/**
- * @brief Write the all the edges from all the Nodes of the graph
- * 
- * @param g 
- */
 void saveEdgeGraph(Graph g)
 {
     FILE* fp = fopen("Text_Files/edge_graph.txt", "w");
@@ -329,3 +257,143 @@ Graph readEdges(Graph g)
     return g;
 }
 
+void listEdges(Graph g, char node[])
+{
+    Edge aux = NULL;
+    if (existNode(g, node))
+    {
+        while (strcmp(g->node,node) != 0) g = g->nextr;
+        aux = g->edges;
+        while (aux != NULL) 
+        {
+            printf("Edge: %s | Weight: %.2f\n", aux->node, aux->weight);
+            aux = aux->nextr;
+        }
+    }
+}
+
+void listNodes(Graph g)
+{   
+    if (existNode(g, g->node))
+    {
+        while (g != NULL) 
+        {
+            printf("%s\n", g->node);
+            g = g->nextr;
+        }
+    }
+    printf("\n\n");
+}
+
+// ClientG verifyClientGeocode(Graph g, char geocode[])
+// {
+//     ClientG clients = NULL;
+//     while(g != NULL)
+//     {
+//         ClientG aux = g->clients;
+//         while (aux != NULL)
+//         {
+//             if(strcmp(g->node, geocode) == 0)
+//             {
+//                 clients = aux;
+//                 return clients;
+//                 printf("Client found!!\n");
+//                 break;
+//             }
+//             aux = aux->nextr;
+//         }
+//         if(clients != NULL) break;
+//         g = g->nextr; 
+//     }
+//     if(clients == NULL) //main
+//     {
+//         printf("Client not found.\n");
+//     }
+// }
+
+ClientG verifyClientGeocode(Graph g, char geocode[])
+{
+    while (g != NULL)
+    {
+        ClientG aux = g->clients;
+        while (aux != NULL)
+        {
+            if (strcmp(g->node, geocode) == 0)
+            {
+                return aux;
+            }
+            aux = aux->nextr;
+        }
+        g = g->nextr;
+    }
+    return NULL;
+}
+
+void listVehiclesPerRadius(Graph g, char geocode[], char type[], float radius)
+{
+    // Find the client's node in the graph
+    Graph clientNode = NULL;
+    Graph currentNode = g;
+    while (currentNode != NULL)
+    {
+        if (strcmp(currentNode->node, geocode) == 0)
+        {
+            clientNode = currentNode;
+            break;
+        }
+        currentNode = currentNode->nextr;
+    }
+
+    if (clientNode != NULL)
+    {
+        float weight_total = 0;
+        int numVehicle = 0;
+        VehicleG vehiclesFound[MAX_VEHICLESG];
+
+        // Traverse the edges of the client's node
+        Edge aux = clientNode->edges;
+        while (aux != NULL)
+        {
+            // Calculate the cumulative weight of the edges
+            weight_total += aux->weight;
+            printf("%.1f-> ", weight_total);
+            // Check if the cumulative weight is within the radius
+            if (weight_total <= radius)
+            {
+                // Traverse the vehicles list of the current geocode
+                VehicleG auxV = clientNode->vehicles;
+                while (auxV != NULL)
+                {
+                    // Check if the vehicle type matches the desired type
+                    if (strcmp(auxV->type, type) == 0)
+                    {
+                        numVehicle++;
+                        printf("pop");
+                        vehiclesFound[numVehicle] = auxV;
+                    }
+                    auxV = auxV->nextr;
+                }
+            }
+            weight_total = 0;
+            aux = aux->nextr;
+        }
+
+        // Display the vehicles found within the radius and matching the type
+        if (numVehicle > 0)
+        {
+            printf("Vehicles of type %s within radius %.2f from client's geocode %s:\n", type, radius, geocode);
+            for (int i = 1; i <= numVehicle; i++)
+            {
+                printf("Vehicle %d: %s\n", i, vehiclesFound[i]->type);
+            }
+        }
+        else
+        {
+            printf("No vehicles of type %s found within radius %.2f from client's geocode %s.\n", type, radius, geocode);
+        }
+    }
+    else
+    {
+        printf("Client not found.\n");
+    }
+}

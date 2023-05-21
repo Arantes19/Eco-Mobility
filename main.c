@@ -51,6 +51,7 @@ int menu()
     printf("22. Read data from graph file\n");
     printf("23. Save data on graph file\n");
     printf("24. List edges\n");
+    printf("25. Verify client location in graph\n");
     printf("0. Leave\n\n");
 
     printf("Opcao: ");
@@ -67,20 +68,29 @@ int main()
     Manager* managers = NULL;
     Graph g = NULL;
 
-    //Create graph
+    ////Create graph
     createNode(&g, "Braga");
     createNode(&g, "Porto");
+    createNode(&g, "Aveiro");
+    createNode(&g, "Coimbra");
     createNode(&g, "Lisboa");
     createEdge(g, "Braga", "Porto", 50.0);
-    createEdge(g, "Braga", "Lisboa", 390.0);
-    createEdge(g, "Lisboa", "Porto", 50.0);
-    createEdge(g, "Porto", "Lisboa", 390.0);
+    createEdge(g, "Braga", "Aveiro", 120.0);
+    createEdge(g, "Braga", "Lisboa", 350.0);
+    createEdge(g, "Porto", "Aveiro", 70.0);
+    createEdge(g, "Porto", "Coimbra", 120.0);
+    createEdge(g, "Coimbra", "Lisboa", 200.0);
+    createEdge(g, "Lisboa", "Coimbra", 200.0);
     insertVehicleGraph(g, "Braga", 1, "Car", 80.0, 100.0, 17);
     insertVehicleGraph(g, "Porto", 2, "Car", 50.0, 500.0, 16);
-    insertVehicleGraph(g, "Lisboa", 3, "Car", 50.0, 3000.0, 15);
+    insertVehicleGraph(g, "Aveiro", 3, "Car", 50.0, 800.0, 18);
+    insertVehicleGraph(g, "Aveiro", 4, "Car", 50.0, 800.0, 19);
+    insertVehicleGraph(g, "Coimbra", 5, "Car", 50.0, 3000.0, 20);
+    insertVehicleGraph(g, "Lisboa", 6, "Car", 50.0, 3000.0, 20);
     insertClientGraph(g, "Braga", 1);
     insertClientGraph(g, "Porto", 2);
-    insertClientGraph(g, "Lisboa", 2);
+    insertClientGraph(g, "Aveiro", 3);
+    insertClientGraph(g, "Lisboa", 4);
 
 
     int op, ccode, nif, cod, mcod, gcod, cont, updt;
@@ -95,6 +105,8 @@ int main()
     char newUsername[100];
     char newPassword[100], node[100];
 
+    char cGgeo[TAM], vGtype[TAM];
+    float radius;
 
 
     do
@@ -265,8 +277,28 @@ int main()
                     saveNodes(g);
                     saveVehiclesGraph(g);
                     saveClientsGraph(g);
-                    saveEdgeGraph(g); break;
-            case 24: listEdges(g, "Braga"); break;
+                    saveEdgeGraph(g); 
+                break;
+            case 24: listNodes(g);
+                     listEdges(g, "Braga"); 
+                     break;
+            case 25: printf("Insert the Client's location: ");
+                     scanf("%s", cGgeo);
+                     ClientG foundClient = verifyClientGeocode(g, cGgeo);
+                     if (foundClient != NULL)
+                     {
+                        printf("Client found!\n\n");
+                        printf("Vehicle type: \n");
+                        scanf("%s", vGtype);
+                        printf("Chose a radius: \n");
+                        scanf("%f", &radius);
+                        listVehiclesPerRadius(g, cGgeo, vGtype, radius);
+                     }
+                     else
+                     {
+                        printf("Client not found.\n");
+                     }
+                    break;
             default: 
                 break;
         }
