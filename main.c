@@ -288,9 +288,9 @@ int main()
                      if (foundClient != NULL)
                      {
                         printf("Client found!\n\n");
-                        printf("Vehicle type: \n");
+                        printf("Vehicle type: ");
                         scanf("%s", vGtype);
-                        printf("Chose a radius: \n");
+                        printf("Chose a radius: ");
                         scanf("%f", &radius);
                         listVehiclesPerRadius(g, cGgeo, vGtype, radius);
                      }

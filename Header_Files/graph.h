@@ -30,7 +30,7 @@ typedef struct regist3
     float space;
     struct regist3 * nextr; 
 } *VehicleG;
-   
+     
 // Representação de um grafo orientado e pesado
 typedef struct regist2
 {
@@ -50,7 +50,7 @@ typedef struct regist1
     int state;
     struct regist1 *nextr;
 } *Graph;           
-  
+    
 int createNode(Graph* g, char nodeId[]);
 int existNode(Graph g, char node[]);
 int createEdge(Graph g, char nodeOrigin[], char nodeDestiny[], float weight);
@@ -71,5 +71,5 @@ Graph readNodes(Graph g);
 Graph findNode(Graph g, char geocode[]);
 Graph findNodeNext(Graph g, char geocode[]);
 ClientG verifyClientGeocode(Graph g, char geocode[]);
-void traverseEdgesDFS(Edge node, char geo[], char type[], float radius, float currentWeight);
+void traverseEdgesDFS(Graph node, char type[], float radius, float currentWeight);
 void listVehiclesPerRadius(Graph g, char geocode[], char type[], float radius);

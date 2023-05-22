@@ -1,4 +1,4 @@
-Graph draft
+/* Graph draft
                         node
                           |  
                           | Edge
@@ -35,25 +35,37 @@ each client of the graph:
  - client code associated
  - client geocode
 
-Fase 2: 
-Ex3 Algorithm
+ // Determinar se vértice 'id' já foi visitado
+int visitado(int sequencia[],int pos, int id)
+{int i;
+ for(i=0;i<pos;i++) if (sequencia[i]==id) return(1);
+ return(0);
+}
 
-1. Read the location of the client from the input or retrieve it from the desired source.
-2. Specify the type of electric mobility means you want to search for.
-3. Specify the radius within which you want to search for electric mobility means.
-4. Load the graph data structure from the text file, which contains the locations of the clients and electric mobility means.
-5. Traverse the graph to find the client's location based on the given information.
-6. Once the client's location is found, traverse the adjacent nodes of the client's node within the specified radius:
-Initialize a variable (e.g., totalWeight) to keep track of the cumulative weight of the edges.
-Traverse the adjacent nodes of the client's node.
-For each adjacent node, calculate the distance between the nodes and check if it is within the radius:
-Retrieve the weight of the edge connecting the client's node and the current adjacent node.
-Add the weight to the totalWeight.
-If the distance is within the radius, proceed to the next step.
-7. Count the number of electric mobility means within the radius that match the desired vehicle type:
-Initialize a variable (e.g., count) to keep track of the number of matching electric mobility means.
-Traverse the adjacent nodes of the client's node again.
-For each adjacent node, check if it represents an electric mobility mean and if its type matches the desired vehicle type:
-Retrieve the relevant information (e.g., nodeType, nodeVehicleType) to determine if it represents an electric mobility mean and its type.
-If it represents an electric mobility mean and the type matches the desired vehicle type, increment the count.
-8. Display or process the count to see how many electric mobility means of the desired type are within the specified radius.
+// Listar os caminhos existentes entre dois vértices passados
+// por parâmetro
+void listarCaminhosAux(Adjacentes G[], int origem, int destino,  
+		    int sequencia[], int posicao, int pesoTotal)
+{ int i;
+  Adjacentes aux;
+  sequencia[posicao] = origem;
+  if (origem==destino) 
+  {for(i=0;i<posicao;i++) printf("%d->",sequencia[i]); // escrita de um caminho
+   printf("%d (%d)\n",destino,pesoTotal);
+  }
+  else 
+  {aux = G[origem]; 
+   while (aux!=NULL)
+   {if (!visitado(sequencia,posicao,aux->id)) 
+	   listarCaminhosAux(G,aux->id,destino,sequencia,posicao+1,
+			     pesoTotal+aux->peso);
+    aux = aux->seguinte;
+   }
+  }
+}
+
+void listarCaminhos(Adjacentes G[], int origem, int destino)
+{int sequencia[VERTICES];
+ listarCaminhosAux(G,origem,destino,sequencia,0,0);
+} 
+*/
