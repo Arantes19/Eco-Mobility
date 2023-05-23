@@ -24,6 +24,7 @@ int createNode(Graph *g, char nodeId[])
         new->vehicles = NULL;
         new->clients = NULL;   
         new->edges = NULL;
+        new->state = 0;
         new->nextr = *g;
         *g = new;
         return 1;
@@ -333,7 +334,7 @@ Graph findNode(Graph g, char geocode[])
 {
     while (g != NULL)
     {
-        if (strcmp(g->node, geocode) == 0)
+        if (strcmp(g->node, geocode) == 0 && (g->state==0))
         {
             return g;
         }
@@ -342,105 +343,42 @@ Graph findNode(Graph g, char geocode[])
     return NULL;
 }
 
-Graph findNodeNext(Graph g, char geocode[])
+void traverseEdgesDFS(Graph node, char type[], float radius, float currentWeight, Graph g)
 {
-    while (g != NULL)
-    {
-        if (strcmp(g->node, geocode) != 0)
-        {
-            return g;
-        }
-        g = g->nextr;
-    }
-    return NULL;
-}
+    if(node->state) return;
+    
+    node->state = 1;
 
-void traverseEdgesDFS(Graph node, char type[], float radius, float currentWeight)
-{
-   // Traverse the vehicles list of the current node
-    VehicleG auxV = node->vehicles;
-    while (auxV != NULL)
-    {
-        // Check if the vehicle type matches the desired type
-        if (strcmp(auxV->type, type) == 0)
-        { 
-            printf("Vehicle: %s -> %d -> %s -> %.2f -> %.2f -> %d;\n",auxV->geocode, auxV->vcode, auxV->type, auxV->batery, auxV->weight, auxV->space);
-            
-        }
-        auxV = auxV->nextr;
-    }
-
-    // Traverse the edges of the current node recursively
-    Edge aux = node->edges;
-    while (aux != NULL)
-    {
-        printf("\t%s ->", aux->node);
-        printf("aqui! -> ");
-        float newWeight = currentWeight + aux->weight;
-        printf("%.2f -> ", newWeight);
-        // Verify if the cumulative weight is within the radius
-        if (newWeight <= radius)
+   VehicleG vehicles = node->vehicles;
+   while(vehicles != NULL)
+   {
+        if(strcmp(vehicles->type, type) == 0 && currentWeight<=radius)
         {
-            printf("check -> ");
-            // Traverse the next node
-            Graph nextNode = findNode(node, aux->node); // Helper function to find the next node by its geocode
-            if (nextNode != NULL)
-            {
-                traverseEdgesDFS(nextNode, type, radius, newWeight);
-            }
+            printf("Vehicle: %s -> %d -> %s -> %.2f -> %.2f -> %d;\n",
+                vehicles->geocode, vehicles->vcode, vehicles->type, 
+                vehicles->batery, vehicles->weight, vehicles->space);
         }
-         printf("%s\n", aux->node);
-        aux = aux->nextr;
-    }
+        vehicles = vehicles->nextr;
+   }
+   Edge edges = node->edges;
+   while(edges != NULL)
+   {
+        Graph nextNode = findNode(g, edges->node);
+        if(nextNode != NULL)
+        {
+            float newWeight = currentWeight+edges->weight;
+            traverseEdgesDFS(nextNode, type, radius, newWeight, g);
+        }
+        edges = edges->nextr;
+   }
 }
 
 
 void listVehiclesPerRadius(Graph g, char geocode[], char type[], float radius)
 {
-     // Find the client's node in the graph
-    Graph clientNode = findNode(g, geocode);
-    printf("\n%s\n\n", clientNode);
-    if (clientNode != NULL)
+    if (g != NULL)
     {
-        float weightTotal = 0;
-
-        VehicleG auxV = clientNode->vehicles;
-        while (auxV != NULL)
-        {
-            // Check if the vehicle type matches the type imputed.
-            if (strcmp(auxV->type, type) == 0)
-            {
-                printf("Vehicle: %s -> %d -> %s -> %.2f -> %.2f -> %d;\n",auxV->geocode, auxV->vcode, auxV->type, auxV->batery, auxV->weight, auxV->space);
-            }
-            auxV = auxV->nextr;
-        }
-         // Traverse the edges of the client's node
-        Edge aux = clientNode->edges;
-        while (aux != NULL)
-        {   
-            printf("%s ->", aux->node);
-            printf("aqui! -> ");
-            weightTotal += aux->weight;
-            printf("%.2f -> ", weightTotal);
-            // Check if the cumulative weight is within the radius
-            if (weightTotal <= radius)
-            {
-                printf("check -> ");
-                Graph nextNode = findNodeNext(clientNode, aux->node);
-                printf("%s -> ", nextNode);
-                if (nextNode != NULL)
-                {
-                    printf("pop -> ");
-                    traverseEdgesDFS(nextNode, type, radius, weightTotal);
-                }
-                nextNode = nextNode->nextr;
-            } printf("%s\n", aux->node);
-            weightTotal = 0;
-            aux = aux->nextr;
-        } 
-        }
-    else
-    {
-        printf("Client not found.\n");
+        Graph clientNode = findNode(g, geocode);
+        traverseEdgesDFS(clientNode, type, radius, 0.0, g);
     }
 }

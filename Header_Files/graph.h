@@ -40,7 +40,7 @@ typedef struct regist2
     VehicleG* vehicles;
     struct regist2 * nextr; 
 } *Edge;
-       
+         
 typedef struct regist1 
 {
     char node[TAM]; // geocódigo what3words
@@ -69,7 +69,6 @@ Graph readClientsGraph(Graph g);
 Graph readNodes(Graph g);
 
 Graph findNode(Graph g, char geocode[]);
-Graph findNodeNext(Graph g, char geocode[]);
 ClientG verifyClientGeocode(Graph g, char geocode[]);
-void traverseEdgesDFS(Graph node, char type[], float radius, float currentWeight);
+void traverseEdgesDFS(Graph node, char type[], float radius, float currentWeight, Graph g);
 void listVehiclesPerRadius(Graph g, char geocode[], char type[], float radius);

@@ -1,4 +1,4 @@
-/* Graph draft
+Graph draft
                         node
                           |  
                           | Edge
@@ -35,6 +35,8 @@ each client of the graph:
  - client code associated
  - client geocode
 
+Recomendável usar este algoritmo.
+
  // Determinar se vértice 'id' já foi visitado
 int visitado(int sequencia[],int pos, int id)
 {int i;
@@ -68,4 +70,3 @@ void listarCaminhos(Adjacentes G[], int origem, int destino)
 {int sequencia[VERTICES];
  listarCaminhosAux(G,origem,destino,sequencia,0,0);
 } 
-*/
