@@ -1,5 +1,5 @@
-Lisboa;
-Coimbra;
-Aveiro;
-Porto;
-Braga;
+Lisboa
+Coimbra
+Aveiro
+Porto
+Braga

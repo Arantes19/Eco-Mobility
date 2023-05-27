@@ -15,12 +15,12 @@
 #include "../Header_Files/graph.h"
 #define MAX_VEHICLESG 50
 
-int createNode(Graph *g, char nodeId[])
+int createNode(Graph *g, char node[])
 {
     Graph new = malloc(sizeof(struct regist1));
     if (new != NULL)
     {
-        strcpy(new->node, nodeId);
+        strcpy(new->node, node);
         new->vehicles = NULL;
         new->clients = NULL;   
         new->edges = NULL;
@@ -70,8 +70,8 @@ int insertVehicleGraph(Graph g, char geocode[], int vehicleCode, char tp[], floa
     else 
         {
             VehicleG new = malloc(sizeof(struct regist3));
-            new->vcode = vehicleCode;
             strcpy(new->geocode, geocode); 
+            new->vcode = vehicleCode;
             strcpy(new->type, tp); 
             new->batery = bat;
             new->weight = weight;
@@ -100,17 +100,19 @@ int insertClientGraph(Graph g, char geocode[], int clientCode)
 void saveNodes(Graph g)
 {
     FILE* fp = fopen("Text_Files/nodes_graph.txt", "w");
-    if (fp == NULL)
+    if (fp != NULL)
     {
-           printf("Failed to open the file.\n");
-           return;
+        Graph node = g;
+
+        while (node != NULL) {
+            fprintf(fp, "%s\n", node->node);
+            node = node->nextr;
+        }
+
+        fclose(fp);
+    } else {
+        printf("Erro opening the file!!\n");
     }
-    while(g != NULL)
-    {
-        fprintf(fp, "%s;\n", g->node);
-        g = g->nextr;
-    }
-    fclose(fp);
 }
 
 void saveVehiclesGraph(Graph g)
@@ -123,11 +125,11 @@ void saveVehiclesGraph(Graph g)
     }
     while(g != NULL)
     {
-        fprintf(fp, "%s->", g->node);
         VehicleG aux = g->vehicles;
         while (aux != NULL)
         {
-            fprintf(fp, "%d;%s;%f;%f;%f\n", aux->vcode, aux->type, aux->batery, aux->weight, aux->space);
+            fprintf(fp, "%s ", g->node);
+            fprintf(fp, "%d %s %f %f %f\n", aux->vcode, aux->type, aux->batery, aux->weight, aux->space);
             aux = aux->nextr;
         }
         g = g->nextr;
@@ -145,11 +147,11 @@ void saveClientsGraph(Graph g)
     }
     while(g != NULL)
     {
-        fprintf(fp, "%s->", g->node);
         ClientG aux = g->clients;
         while (aux != NULL)
         {
-            fprintf(fp, "%d;\n", aux->ccode);
+            fprintf(fp, "%s ", g->node);
+            fprintf(fp, "%d\n", aux->ccode);
             aux = aux->nextr;
         }
         g = g->nextr;
@@ -167,12 +169,11 @@ void saveEdgeGraph(Graph g)
     }
     while(g != NULL)
     {
-        fprintf(fp, "%s->", g->node);
         Edge aux = g->edges; 
-        printf("%s -> ", aux);
         while (aux != NULL)
         {
-            fprintf(fp, "%s;%f;\n", aux->node, aux->weight);
+            fprintf(fp, "%s ", g->node);
+            fprintf(fp, "%s %f\n", aux->node, aux->weight);
             aux = aux->nextr;
         }
         g = g->nextr;
@@ -180,82 +181,79 @@ void saveEdgeGraph(Graph g)
     fclose(fp);
 }
 
-Graph readNodes(Graph g)
+void readNodes(Graph* g)
 {
-    FILE* fp;
+    FILE* fp = fopen("Text_Files/nodes_graph.txt", "r");
     char node[250];
 
-    Graph* aux = NULL;
-    fp = fopen("Text_Files/nodes_graph.txt", "r");
     if(fp != NULL)
     {
-        while(!feof(fp))
+        while(fgets(node, sizeof(node), fp) != NULL)
         {
-            fscanf(fp, "%[^;];\n", node); 
+            node[strcspn(node, "\n")] = '\0';
+            createNode(g, node);
         }
         fclose(fp);
     }
-     return g;
+    else printf("Error opening the file");
 }
 
-Graph readVehiclesGraph(Graph g)
+void readVehiclesGraph(Graph* g)
 {
     FILE* fp;
     int vcode;
     float bat, space, weight;
-    char node[250], type[100];
+    char node[250], type[100], line[250];
 
-    Graph* auxg = NULL;
-    VehicleG* aux = NULL;
     fp = fopen("Text_Files/vehicles_graph.txt", "r");
     if(fp != NULL)
     {
-        while(!feof(fp))
+       while(fgets(line, sizeof(line), fp) != NULL)
         {
-            fscanf(fp, "%s->%d;%s;%f;%f;\n",node, &vcode, type, &bat, &weight, &space);
+            if(sscanf(line, "%s %d %s %f %f %f", node, &vcode, type, &bat, &weight, &space) == 6)
+            insertVehicleGraph(*g, node, vcode, type, bat, weight, space);
         }
         fclose(fp);
     }
-    return g;
+    else printf("Error opening the file");
 }
 
-Graph readClientsGraph(Graph g)
+void readClientsGraph(Graph* g)
 {
     FILE* fp;
     int ccode;
-    char node[250];
+    char node[250], line[250];
 
-    Graph* auxg = NULL;
-    ClientG* aux = NULL;
     fp = fopen("Text_Files/clients_graph.txt", "r");
     if(fp != NULL)
     {
-        while(!feof(fp))
+        while(fgets(line, sizeof(line), fp) != NULL)
         {
-            fscanf(fp, "%s->%d;\n", node, &ccode);
+            if(sscanf(line, "%s %d", node, &ccode) == 2);
+            insertClientGraph(*g, node, ccode);
         }
         fclose(fp);
     }
-    return g;
+    else printf("Error opening the file");
 }
 
-Graph readEdges(Graph g)
+void readEdges(Graph* g)
 {
     FILE* fp;
-    char nodeO[250], nodeD[250];
+    char nodeO[250], nodeD[250], line[250];
     float weight;
 
-    Graph* aux = NULL;
-    fp = fopen("Text_Files/edges_graph.txt", "r");
+    fp = fopen("Text_Files/edge_graph.txt", "r");
     if(fp != NULL)
     {
-        while(!feof(fp))
+        while(fgets(line, sizeof(line), fp) != NULL)
         {
-            fscanf(fp, "%[^->]->%[^;];%f;\n", nodeO, nodeD, &weight);
+            if(sscanf(line, "%s %s %f", nodeO, nodeD, &weight) == 3);
+            createEdge(*g, nodeO, nodeD, weight);
         }
         fclose(fp);
     }
-    return g;
+    else printf("Error opening the file");
 }
 
 void listEdges(Graph g, char node[])
@@ -285,32 +283,6 @@ void listNodes(Graph g)
     }
     printf("\n\n");
 }
-
-// ClientG verifyClientGeocode(Graph g, char geocode[])
-// {
-//     ClientG clients = NULL;
-//     while(g != NULL)
-//     {
-//         ClientG aux = g->clients;
-//         while (aux != NULL)
-//         {
-//             if(strcmp(g->node, geocode) == 0)
-//             {
-//                 clients = aux;
-//                 return clients;
-//                 printf("Client found!!\n");
-//                 break;
-//             }
-//             aux = aux->nextr;
-//         }
-//         if(clients != NULL) break;
-//         g = g->nextr; 
-//     }
-//     if(clients == NULL) //main
-//     {
-//         printf("Client not found.\n");
-//     }
-// }
 
 ClientG verifyClientGeocode(Graph g, char geocode[])
 {
@@ -345,8 +317,7 @@ Graph findNode(Graph g, char geocode[])
 
 void traverseEdgesDFS(Graph node, char type[], float radius, float currentWeight, Graph g)
 {
-    if(node->state) return;
-    
+    if(node->state == 1) return;
     node->state = 1;
 
    VehicleG vehicles = node->vehicles;
@@ -363,22 +334,39 @@ void traverseEdgesDFS(Graph node, char type[], float radius, float currentWeight
    Edge edges = node->edges;
    while(edges != NULL)
    {
+        printf("\t-> %s", edges->node);
         Graph nextNode = findNode(g, edges->node);
         if(nextNode != NULL)
         {
             float newWeight = currentWeight+edges->weight;
+            printf(" -> %f\n", newWeight);
             traverseEdgesDFS(nextNode, type, radius, newWeight, g);
         }
         edges = edges->nextr;
    }
 }
 
-
 void listVehiclesPerRadius(Graph g, char geocode[], char type[], float radius)
 {
     if (g != NULL)
     {
         Graph clientNode = findNode(g, geocode);
+        if(clientNode == NULL) 
+        {
+            printf("Geocode doesn't exists in graph!!");
+            return;
+        }
         traverseEdgesDFS(clientNode, type, radius, 0.0, g);
+    }
+    else{
+        printf("Nodes list empty");
+    }
+}
+
+void resetarVisitados(Graph g) 
+{
+    while (g != NULL) {
+        g->state = 0;
+        g = g->nextr;
     }
 }

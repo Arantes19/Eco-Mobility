@@ -1,7 +1,6 @@
-Lisboa->Coimbra;200.000000;
-Coimbra->Lisboa;200.000000;
-Aveiro->Porto->Coimbra;120.000000;
-Aveiro;70.000000;
-Braga->Lisboa;350.000000;
-Aveiro;120.000000;
-Porto;50.000000;
+Coimbra Lisboa 200.000000
+Porto Coimbra 120.000000
+Porto Aveiro 70.000000
+Braga Lisboa 350.000000
+Braga Aveiro 120.000000
+Braga Porto 50.000000

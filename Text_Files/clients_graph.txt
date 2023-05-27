@@ -1,4 +1,4 @@
-Lisboa->4;
-Coimbra->Aveiro->3;
-Porto->2;
-Braga->1;
+Lisboa 4
+Aveiro 3
+Porto 2
+Braga 1

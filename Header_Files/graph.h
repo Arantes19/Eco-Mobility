@@ -63,10 +63,10 @@ void saveNodes(Graph g);
 void saveVehiclesGraph(Graph g);
 void saveClientsGraph(Graph g);
 void saveEdgeGraph(Graph g);
-Graph readNodes(Graph g);
-Graph readVehiclesGraph(Graph g);
-Graph readClientsGraph(Graph g);
-Graph readNodes(Graph g);
+void readNodes(Graph* g);
+void readVehiclesGraph(Graph* g);
+void readClientsGraph(Graph* g);
+void readEdges(Graph* g);
 
 Graph findNode(Graph g, char geocode[]);
 ClientG verifyClientGeocode(Graph g, char geocode[]);
