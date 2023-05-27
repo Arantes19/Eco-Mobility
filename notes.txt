@@ -37,7 +37,7 @@ each client of the graph:
 
 Recomendável usar este algoritmo.
 
- // Determinar se vértice 'id' já foi visitado
+// Determinar se vértice 'id' já foi visitado
 int visitado(int sequencia[],int pos, int id)
 {int i;
  for(i=0;i<pos;i++) if (sequencia[i]==id) return(1);

@@ -317,17 +317,17 @@ Graph findNode(Graph g, char geocode[])
 
 void traverseEdgesDFS(Graph node, char type[], float radius, float currentWeight, Graph g)
 {
-    if(node->state == 1) return;
-    node->state = 1;
-
-   VehicleG vehicles = node->vehicles;
+    if((node->state == 1) || (node->state == 2)) return;                                        //state 0 - Não visitado
+    node->state = 1;                                                                            //state 1-  Visitado mas caminho não aceite
+   VehicleG vehicles = node->vehicles;                                                          //state 2 - Visitado, já não deve retornar nada 
    while(vehicles != NULL)
    {
         if(strcmp(vehicles->type, type) == 0 && currentWeight<=radius)
         {
+            node->state = 2;
             printf("Vehicle: %s -> %d -> %s -> %.2f -> %.2f -> %d;\n",
                 vehicles->geocode, vehicles->vcode, vehicles->type, 
-                vehicles->batery, vehicles->weight, vehicles->space);
+                vehicles->batery, vehicles->weight, vehicles->space);   
         }
         vehicles = vehicles->nextr;
    }
@@ -344,6 +344,7 @@ void traverseEdgesDFS(Graph node, char type[], float radius, float currentWeight
         }
         edges = edges->nextr;
    }
+   if(node->state == 1) node->state = 0;
 }
 
 void listVehiclesPerRadius(Graph g, char geocode[], char type[], float radius)
@@ -363,10 +364,9 @@ void listVehiclesPerRadius(Graph g, char geocode[], char type[], float radius)
     }
 }
 
-void resetarVisitados(Graph g) 
-{
-    while (g != NULL) {
-        g->state = 0;
-        g = g->nextr;
-    }
-}
+// void resetState(Graph g) 
+// {
+//     while (g != NULL) {
+//         g->state = 0;
+//     }
+// }

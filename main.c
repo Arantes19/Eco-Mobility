@@ -69,27 +69,31 @@ int main()
     Graph g = NULL;
 
     //Create graph
-    // createNode(&g, "Braga");
-    // createNode(&g, "Porto");
-    // createNode(&g, "Aveiro");
-    // createNode(&g, "Coimbra");
-    // createNode(&g, "Lisboa");
-    // createEdge(g, "Braga", "Porto", 50.0);
-    // createEdge(g, "Braga", "Aveiro", 120.0);
-    // createEdge(g, "Braga", "Lisboa", 350.0);
-    // createEdge(g, "Porto", "Aveiro", 70.0);
-    // createEdge(g, "Porto", "Coimbra", 120.0);
-    // createEdge(g, "Coimbra", "Lisboa", 200.0);
-    // insertVehicleGraph(g, "Braga", 1, "Car", 80.0, 100.0, 17);
-    // insertVehicleGraph(g, "Porto", 2, "Car", 50.0, 500.0, 16);
-    // insertVehicleGraph(g, "Aveiro", 3, "Car", 50.0, 800.0, 18);
-    // insertVehicleGraph(g, "Aveiro", 4, "Car", 50.0, 800.0, 19);
-    // insertVehicleGraph(g, "Coimbra", 5, "Car", 50.0, 3000.0, 20);
-    // insertVehicleGraph(g, "Lisboa", 6, "Car", 50.0, 3000.0, 20);
-    // insertClientGraph(g, "Braga", 1);
-    // insertClientGraph(g, "Porto", 2);
-    // insertClientGraph(g, "Aveiro", 3);
-    // insertClientGraph(g, "Lisboa", 4);
+    createNode(&g, "Braga");
+    createNode(&g, "Porto");
+    createNode(&g, "Aveiro");
+    createNode(&g, "Coimbra");
+    createNode(&g, "Lisboa");
+    createEdge(g, "Braga", "Porto", 50.0);
+    createEdge(g, "Porto", "Braga", 50.0);
+    createEdge(g, "Braga", "Aveiro", 120.0);
+    createEdge(g, "Aveiro", "Braga", 120.0);
+    createEdge(g, "Braga", "Lisboa", 350.0);
+    createEdge(g, "Lisboa", "Braga", 120.0);
+    createEdge(g, "Porto", "Aveiro", 70.0);
+    createEdge(g, "Porto", "Coimbra", 120.0);
+    createEdge(g, "Coimbra", "Lisboa", 200.0);
+    createEdge(g, "Lisboa", "Coimbra", 200.0);
+    insertVehicleGraph(g, "Braga", 1, "Car", 80.0, 100.0, 17);
+    insertVehicleGraph(g, "Porto", 2, "Car", 50.0, 500.0, 16);
+    insertVehicleGraph(g, "Aveiro", 3, "Car", 50.0, 800.0, 18);
+    insertVehicleGraph(g, "Aveiro", 4, "Car", 50.0, 800.0, 19);
+    insertVehicleGraph(g, "Coimbra", 5, "Car", 50.0, 3000.0, 20);
+    insertVehicleGraph(g, "Lisboa", 6, "Car", 50.0, 3000.0, 20);
+    insertClientGraph(g, "Braga", 1);
+    insertClientGraph(g, "Porto", 2);
+    insertClientGraph(g, "Aveiro", 3);
+    insertClientGraph(g, "Lisboa", 4);
 
 
     int op, ccode, nif, cod, mcod, gcod, cont, updt;
