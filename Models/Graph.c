@@ -317,9 +317,9 @@ Graph findNode(Graph g, char geocode[])
 
 void traverseEdgesDFS(Graph node, char type[], float radius, float currentWeight, Graph g)
 {
-    if((node->state == 1) || (node->state == 2)) return;                                        //state 0 - Não visitado
+    if((node->state == 1) || (node->state == 2) || currentWeight>radius) return;                //state 0 - Não visitado
     node->state = 1;                                                                            //state 1-  Visitado mas caminho não aceite
-   VehicleG vehicles = node->vehicles;                                                          //state 2 - Visitado, já não deve retornar nada 
+   VehicleG vehicles = node->vehicles;                                                          //state 2 - Visitado 
    while(vehicles != NULL)
    {
         if(strcmp(vehicles->type, type) == 0 && currentWeight<=radius)
@@ -363,10 +363,3 @@ void listVehiclesPerRadius(Graph g, char geocode[], char type[], float radius)
         printf("Nodes list empty");
     }
 }
-
-// void resetState(Graph g) 
-// {
-//     while (g != NULL) {
-//         g->state = 0;
-//     }
-// }

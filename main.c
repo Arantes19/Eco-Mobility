@@ -79,9 +79,11 @@ int main()
     createEdge(g, "Braga", "Aveiro", 120.0);
     createEdge(g, "Aveiro", "Braga", 120.0);
     createEdge(g, "Braga", "Lisboa", 350.0);
-    createEdge(g, "Lisboa", "Braga", 120.0);
+    createEdge(g, "Lisboa", "Braga", 350.0);
     createEdge(g, "Porto", "Aveiro", 70.0);
+    createEdge(g, "Aveiro", "Porto", 70.0);
     createEdge(g, "Porto", "Coimbra", 120.0);
+    createEdge(g, "Coimbra", "Porto", 120.0);
     createEdge(g, "Coimbra", "Lisboa", 200.0);
     createEdge(g, "Lisboa", "Coimbra", 200.0);
     insertVehicleGraph(g, "Braga", 1, "Car", 80.0, 100.0, 17);
@@ -104,7 +106,6 @@ int main()
     float battery, autonomy, price;
     char geocode[100];
     int state, space;
-    
     char newUsername[100];
     char newPassword[100], node[100];
 

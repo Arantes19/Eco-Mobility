@@ -72,4 +72,3 @@ Graph findNode(Graph g, char geocode[]);
 ClientG verifyClientGeocode(Graph g, char geocode[]);
 void traverseEdgesDFS(Graph node, char type[], float radius, float currentWeight, Graph g);
 void listVehiclesPerRadius(Graph g, char geocode[], char type[], float radius);
-void resetState(Graph g);
