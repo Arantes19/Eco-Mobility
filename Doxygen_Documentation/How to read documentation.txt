@@ -1,0 +1,3 @@
+1. Open "html" folder;
+2. Search for "index" file and open with Chrome or any other browser;
+3. Navigate in the Data Strutures and Files section above;
