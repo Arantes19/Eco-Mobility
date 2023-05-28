@@ -15,7 +15,7 @@
 #include "../Header_Files/client.h"
 
 /**
- * @brief Done
+ * @brief Verify is the client exist in the linked list
  * 
  * @param begin 
  * @param ccode 
@@ -35,7 +35,7 @@ int existClient(Client* begin, int ccode)
 }
 
 /**
- * @brief Done
+ * @brief Saves the current data of the linked list into the clientes.txt file
  * 
  * @param begin 
  * @return int 
@@ -59,7 +59,7 @@ int saveClient(Client* begin)
 }
 
 /**
- * @brief Done
+ * @brief Reads all the data from the clients.txt file to the linked list
  * 
  * @return Client* 
  */
@@ -84,7 +84,7 @@ Client* readClients()
 }
 
 /**
- * @brief Done
+ * @brief Insert a new client on the linked list
  * 
  * @param begin 
  * @param ccode 
@@ -116,7 +116,7 @@ Client* insertClient(Client* begin, int ccode, int nif, char name[], float bal, 
 }
 
 /**
- * @brief Done
+ * @brief Removes a client from the linked list
  * 
  * @param begin 
  * @param ccode 
@@ -150,7 +150,7 @@ Client* removeClient(Client* begin, int ccode)
 }
 
 /**
- * @brief Done
+ * @brief list all the clients of the linked list
  * 
  * @param begin 
  */
@@ -164,7 +164,7 @@ void listClients(Client* begin)
 }
 
 /**
- * @brief Done
+ * @brief Updates a certain client of the linked list 
  * 
  * @param begin 
  * @param ccode 
@@ -190,7 +190,7 @@ int UpdateClients(Client* begin, int ccode, int nif, char newaddress[])
 }
 
 /**
- * @brief Done
+ * @brief Increses the funds of a certain client
  * 
  * @param begin 
  * @param ccod 
@@ -205,11 +205,12 @@ Client* chargeBalance(Client *begin, int ccod, float value)
         if (client->cCode == ccod ) 
         {
             client->balance += value;
-            printf("Saldo atualizado com sucesso!\n Novo saldo: %.2f\n", client->balance);
+            printf("Balance updated!!\n New Balance: %.2f\n", client->balance);
             return client;
         }
         client = client->nextc;
     }
-    printf("Cliente não encontrado.\n");
     return NULL;
+    printf("Client not found.\n");
 }
+

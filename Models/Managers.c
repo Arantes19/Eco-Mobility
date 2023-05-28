@@ -1,6 +1,6 @@
 /**
  * @file Managers.c
- * @author your name (you@domain.com)
+ * @author Francisco Arantes (a23504@alunos.ipca.pt)
  * @brief 
  * @version 0.1
  * @date 2023-05-06
@@ -15,7 +15,7 @@
 #include "../Header_Files/manager.h"
 
 /**
- * @brief Done
+ * @brief Saves manager data in managers.txt file
  * 
  * @param begin 
  * @return int 
@@ -37,13 +37,13 @@ int saveManager(Manager* begin)
     }
     else 
     {
-        printf("Falha na abertura do ficheiro");
+        printf("Error opening the file");
         return(0);
     }
 }
 
 /**
- * @brief Done
+ * @brief lists all the manager data from the linked list
  * 
  * @param begin 
  */
@@ -56,7 +56,7 @@ void listManagers(Manager* begin)
     }
 }
  /**
-  * @brief Done
+  * @brief Reads all the data of managers from the managers.txt file
   * 
   * @return Manager* 
   */
@@ -80,7 +80,7 @@ Manager* readManagers()
 }
 
 /**
- * @brief Done
+ * @brief Insert a new manager in linked list
  * 
  * @param begin 
  * @param mcod 
@@ -108,7 +108,7 @@ Manager* insertManager(Manager* begin, int mcod, char pass[], int cont, char mna
 }
 
 /**
- * @brief Done
+ * @brief Verify is a given manager's code already exists
  * 
  * @param begin 
  * @param mcod 
@@ -127,7 +127,7 @@ int existManager(Manager* begin, int mcod)
 }
 
 /**
- * @brief Done
+ * @brief Removes a manager from the linked list given his code
  * 
  * @param begin 
  * @param mcod 
@@ -161,21 +161,7 @@ Manager* removeManager(Manager* begin, int mcod)
 }
 
 /**
- * @brief Done
- * 
- * @param begin 
- */
-void contactManager(Manager* begin)
-{
-    while (begin != NULL)
-    {
-        printf("%d;%s;\n",begin->contact, begin->username);
-        begin = begin->nextm;
-    }
-}
-
-/**
- * @brief Done
+ * @brief Change the current password from a manager given his code
  * 
  * @param begin 
  * @param mcod 

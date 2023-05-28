@@ -1,6 +1,6 @@
 /**
  * @file vehicles.h
- * @author your name (you@domain.com)
+ * @author Francisco Arantes (a23504@alunos.ipca.pt)
  * @brief 
  * @version 0.1
  * @date 2023-05-06
@@ -36,4 +36,3 @@ void listVehicles(Vehicle* begin);
 void listVehicleDesc(Vehicle* begin);
 void seekVehicle(Vehicle* begin);
 int changeVehicle(Vehicle* begin, int cod, char tp[], float bat, float aut, float prc, char geo[], int stat, int spac);
-void freeVehicle(Vehicle* begin);

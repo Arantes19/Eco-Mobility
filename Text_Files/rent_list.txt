@@ -1,0 +1,2 @@
+Client:Miguel;4;254233848
+Vehicle:Truck;4;Truck;70.00;65.00;1000.00;Braga

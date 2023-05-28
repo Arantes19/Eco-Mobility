@@ -1,3 +1,13 @@
+/**
+ * @file client.h
+ * @author Francisco Arantes (a23504@alunos.ipca.pt)
+ * @brief 
+ * @version 0.1
+ * @date 2023-05-28
+ * 
+ * @copyright Copyright (c) 2023
+ * 
+ */
 #include <stdio.h>
 #define TAM 250
 

@@ -1,6 +1,6 @@
 /**
  * @file graph.h
- * @author your name (you@domain.com)
+ * @author Francisco Arantes (a23504@alunos.ipca.pt)
  * @brief 
  * @version 0.1
  * @date 2023-05-17
@@ -50,15 +50,18 @@ typedef struct regist1
     int state;
     struct regist1 *nextr;  
 } *Graph;           
-    
+   
 int createNode(Graph* g, char nodeId[]);
 int existNode(Graph g, char node[]);
 int createEdge(Graph g, char nodeOrigin[], char nodeDestiny[], float weight);
-void listEdges(Graph g, char node[]);
+void listEdges(Graph g);
 void listNodes(Graph g);
+void listVehiclesG(Graph g);
+void listClientsG(Graph g);
 int insertVehicleGraph(Graph g, char geocode[], int vehicleCode, char tp[], float bat, float weight, float space);
 int insertClientGraph(Graph g, char geocode[], int clientCode);
 
+//Leitura e Escrita 
 void saveNodes(Graph g);
 void saveVehiclesGraph(Graph g);
 void saveClientsGraph(Graph g);

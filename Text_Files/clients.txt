@@ -1,4 +1,4 @@
-3;342324222;Luis;1762.213257;Famalicao;Braga;
+5;123432543;Joao;1000.000000;Carrezedo;Braga;
 2;123987322;Guilherme;1232.213135;SaoVincente;Braga;
-1;254140888;Francisco;1321.213135;Ferreiros;Braga;
+1;254140888;Francisco;1321.213135;Amares;Braga;
 4;254233848;Miguel;1523.230957;Palmeira;Braga;

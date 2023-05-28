@@ -1,6 +1,6 @@
 /**
  * @file Graph.c
- * @author your name (you@domain.com)
+ * @author Francisco Arantes (a23504@alunos.ipca.pt)
  * @brief 
  * @version 0.1
  * @date 2023-05-17
@@ -15,6 +15,13 @@
 #include "../Header_Files/graph.h"
 #define MAX_VEHICLESG 50
 
+/**
+ * @brief Create a Node object
+ * 
+ * @param g 
+ * @param node 
+ * @return int 
+ */
 int createNode(Graph *g, char node[])
 {
     Graph new = malloc(sizeof(struct regist1));
@@ -31,7 +38,13 @@ int createNode(Graph *g, char node[])
     }
     else return 0;
 }
-
+/**
+ * @brief Verify is a certain node exists
+ * 
+ * @param g 
+ * @param node 
+ * @return int 
+ */
 int existNode(Graph g, char node[])
 {
     while (g != NULL)
@@ -41,7 +54,15 @@ int existNode(Graph g, char node[])
     }
     return(0);
 }
-
+/**
+ * @brief Create a Edge object
+ * 
+ * @param g 
+ * @param nodeOrigin 
+ * @param nodeDestiny 
+ * @param weight 
+ * @return int 
+ */
 int createEdge(Graph g, char nodeOrigin[], char nodeDestiny[], float weight)
 {
     Edge new;
@@ -61,7 +82,18 @@ int createEdge(Graph g, char nodeOrigin[], char nodeDestiny[], float weight)
     }
     else return(0);
 }
-
+/**
+ * @brief Insert a vehicle on a certain node from the graph
+ * 
+ * @param g 
+ * @param geocode 
+ * @param vehicleCode 
+ * @param tp 
+ * @param bat 
+ * @param weight 
+ * @param space 
+ * @return int 
+ */
 int insertVehicleGraph(Graph g, char geocode[], int vehicleCode, char tp[], float bat, float weight, float space)
 {
     while ((g != NULL) && (strcmp(g->node, geocode) != 0))
@@ -81,7 +113,14 @@ int insertVehicleGraph(Graph g, char geocode[], int vehicleCode, char tp[], floa
             return(1);	 
         }
 }
-
+/**
+ * @brief Insert a client on a certain node from the graph 
+ * 
+ * @param g 
+ * @param geocode 
+ * @param clientCode 
+ * @return int 
+ */
 int insertClientGraph(Graph g, char geocode[], int clientCode)
 {
     while ((g != NULL) && (strcmp(g->node, geocode) != 0))
@@ -97,6 +136,11 @@ int insertClientGraph(Graph g, char geocode[], int clientCode)
         }
 }
 
+/**
+ * @brief Saves all the current data of nodes in nodes_graph.txt file
+ * 
+ * @param g 
+ */
 void saveNodes(Graph g)
 {
     FILE* fp = fopen("Text_Files/nodes_graph.txt", "w");
@@ -115,6 +159,11 @@ void saveNodes(Graph g)
     }
 }
 
+/**
+ * @brief Saves all the current data of vehicles in vehicles_graph.txt file
+ * 
+ * @param g 
+ */
 void saveVehiclesGraph(Graph g)
 {
     FILE* fp = fopen("Text_Files/vehicles_graph.txt", "w");
@@ -137,6 +186,11 @@ void saveVehiclesGraph(Graph g)
     fclose(fp);
 }
 
+/**
+ * @brief Saves all the clients data in clients_graph.txt file
+ * 
+ * @param g 
+ */
 void saveClientsGraph(Graph g)
 {
     FILE* fp = fopen("Text_Files/clients_graph.txt", "w");
@@ -159,6 +213,11 @@ void saveClientsGraph(Graph g)
     fclose(fp);
 }
 
+/**
+ * @brief Saves all the edges data in edges_graph.txt file
+ * 
+ * @param g 
+ */
 void saveEdgeGraph(Graph g)
 {
     FILE* fp = fopen("Text_Files/edge_graph.txt", "w");
@@ -180,7 +239,11 @@ void saveEdgeGraph(Graph g)
     }
     fclose(fp);
 }
-
+/**
+ * @brief Reads nodes data from nodes_graph.txt file
+ * 
+ * @param g 
+ */
 void readNodes(Graph* g)
 {
     FILE* fp = fopen("Text_Files/nodes_graph.txt", "r");
@@ -198,6 +261,11 @@ void readNodes(Graph* g)
     else printf("Error opening the file");
 }
 
+/**
+ * @brief Read vehicles data from vehicles_graph.txt file
+ * 
+ * @param g 
+ */
 void readVehiclesGraph(Graph* g)
 {
     FILE* fp;
@@ -218,6 +286,11 @@ void readVehiclesGraph(Graph* g)
     else printf("Error opening the file");
 }
 
+/**
+ * @brief Read clients data from clients_graph.txt file
+ * 
+ * @param g 
+ */
 void readClientsGraph(Graph* g)
 {
     FILE* fp;
@@ -237,6 +310,11 @@ void readClientsGraph(Graph* g)
     else printf("Error opening the file");
 }
 
+/**
+ * @brief Read edges data from edges_graph.txt file
+ * 
+ * @param g 
+ */
 void readEdges(Graph* g)
 {
     FILE* fp;
@@ -256,34 +334,87 @@ void readEdges(Graph* g)
     else printf("Error opening the file");
 }
 
-void listEdges(Graph g, char node[])
+/**
+ * @brief Lists all the edges of the graph
+ * 
+ * @param g 
+ */
+void listEdges(Graph g)
 {
     Edge aux = NULL;
-    if (existNode(g, node))
+    if (existNode(g, g->node))
     {
-        while (strcmp(g->node,node) != 0) g = g->nextr;
         aux = g->edges;
         while (aux != NULL) 
         {
-            printf("Edge: %s | Weight: %.2f\n", aux->node, aux->weight);
+            printf("\t%s %.2f\n", aux->node, aux->weight);
             aux = aux->nextr;
         }
     }
 }
 
+/**
+ * @brief Lists all the vehicles of the graph
+ * 
+ * @param g 
+ */
+void listVehiclesG(Graph g)
+{
+    VehicleG auxg = NULL;
+    if (existNode(g, g->node))
+    {
+        auxg = g->vehicles;
+        while (g != NULL) 
+        {
+            printf("\t%s %d %s %.2f %.2f %.2f\n", g->node, auxg->vcode, auxg->type, auxg->batery, auxg->weight, auxg->space);
+            g = g->nextr;
+        }
+    }
+}
+
+/**
+ * @brief Lists all the clients of the graph
+ * 
+ * @param g 
+ */
+void listClientsG(Graph g)
+{
+    ClientG aux = NULL;
+    if (existNode(g, g->node))
+    {
+        aux = g->clients;
+        while (g != NULL) 
+        {
+            printf("\t%s %d\n", g->node, aux->ccode);
+            g = g->nextr;
+        }
+    }
+}
+
+/**
+ * @brief Lists all the nodes of the graph
+ * 
+ * @param g 
+ */
 void listNodes(Graph g)
 {   
     if (existNode(g, g->node))
     {
         while (g != NULL) 
         {
-            printf("%s\n", g->node);
+            printf("\t%s\n", g->node);
             g = g->nextr;
         }
     }
-    printf("\n\n");
 }
 
+/**
+ * @brief Verify is a certain client exists in a given geocode 
+ * 
+ * @param g 
+ * @param geocode 
+ * @return ClientG 
+ */
 ClientG verifyClientGeocode(Graph g, char geocode[])
 {
     while (g != NULL)
@@ -302,6 +433,13 @@ ClientG verifyClientGeocode(Graph g, char geocode[])
     return NULL;
 }
 
+/**
+ * @brief Given a geocode finds the respective node 
+ * 
+ * @param g 
+ * @param geocode 
+ * @return Graph 
+ */
 Graph findNode(Graph g, char geocode[])
 {
     while (g != NULL)
@@ -315,25 +453,34 @@ Graph findNode(Graph g, char geocode[])
     return NULL;
 }
 
+/**
+ * @brief Transverse all the edges recursivly
+ * 
+ * @param node 
+ * @param type 
+ * @param radius 
+ * @param currentWeight 
+ * @param g 
+ */
 void traverseEdgesDFS(Graph node, char type[], float radius, float currentWeight, Graph g)
 {
     if((node->state == 1) || (node->state == 2) || currentWeight>radius) return;                //state 0 - Não visitado
     node->state = 1;                                                                            //state 1-  Visitado mas caminho não aceite
-   VehicleG vehicles = node->vehicles;                                                          //state 2 - Visitado 
-   while(vehicles != NULL)
-   {
+    VehicleG vehicles = node->vehicles;                                                         //state 2 - Visitado 
+    while(vehicles != NULL)
+    {
         if(strcmp(vehicles->type, type) == 0 && currentWeight<=radius)
         {
             node->state = 2;
             printf("Vehicle: %s -> %d -> %s -> %.2f -> %.2f -> %d;\n",
                 vehicles->geocode, vehicles->vcode, vehicles->type, 
-                vehicles->batery, vehicles->weight, vehicles->space);   
+                vehicles->batery, vehicles->weight, vehicles->space);  
         }
         vehicles = vehicles->nextr;
-   }
-   Edge edges = node->edges;
-   while(edges != NULL)
-   {
+    }
+    Edge edges = node->edges;
+    while(edges != NULL)
+    {
         printf("\t-> %s", edges->node);
         Graph nextNode = findNode(g, edges->node);
         if(nextNode != NULL)
@@ -343,10 +490,18 @@ void traverseEdgesDFS(Graph node, char type[], float radius, float currentWeight
             traverseEdgesDFS(nextNode, type, radius, newWeight, g);
         }
         edges = edges->nextr;
-   }
-   if(node->state == 1) node->state = 0;
+    }
+    if(node->state == 1) node->state = 0;
 }
 
+/**
+ * @brief Lists all the vehicles in a certain radius of the graph
+ * 
+ * @param g 
+ * @param geocode 
+ * @param type 
+ * @param radius 
+ */
 void listVehiclesPerRadius(Graph g, char geocode[], char type[], float radius)
 {
     if (g != NULL)
@@ -358,8 +513,9 @@ void listVehiclesPerRadius(Graph g, char geocode[], char type[], float radius)
             return;
         }
         traverseEdgesDFS(clientNode, type, radius, 0.0, g);
+
     }
     else{
-        printf("Nodes list empty");
+        printf("Nodes linked list empty");
     }
 }

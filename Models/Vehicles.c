@@ -1,6 +1,6 @@
 /**
  * @file Vehicles.c
- * @author your name (you@domain.com)
+ * @author Francisco Arantes (a23504@alunos.ipca.pt)
  * @brief 
  * @version 0.1
  * @date 2023-05-06
@@ -13,9 +13,10 @@
 #include <string.h>
 #include <stdlib.h>
 #include "../Header_Files/vehicles.h"
+#include "../Header_Files/client.h"
 
 /**
- * @brief Done
+ * @brief Save current data of vehicles in vehicles.txt file
  * 
  * @param begin 
  * @return int 
@@ -39,7 +40,7 @@ int saveVehicle(Vehicle* begin)
 }
  
 /**
-  * @brief Done
+  * @brief Reads vehicles data from vehicles.txt file
   * 
   * @return Vehicle* 
   */
@@ -64,7 +65,7 @@ Vehicle* readVehicles()
 }
 
 /**
- * @brief Done
+ * @brief Insert a new vehicle on the linked list
  * 
  * @param begin 
  * @param cod 
@@ -100,7 +101,7 @@ Vehicle* insertVehicle(Vehicle* begin, int cod, char tp[], float bat, float aut,
 }
 
 /**
- * @brief Done
+ * @brief Verify is a certain vehicle exists in the linked list given his code
  * 
  * @param begin 
  * @param cod 
@@ -117,58 +118,90 @@ int existVehicle(Vehicle* begin, int cod)
 }
 
 /**
- * @brief Done
+ * @brief Lists all the vehicles of the linked list
  * 
  * @param begin 
  */
 void listVehicles(Vehicle* begin)
-{while (begin != NULL) 
- {printf("%d -> %s -> %.2f -> %.2f -> %.2f -> %s -> %d -> %d ->\n", begin->vCode, begin->type, begin->batery, begin->autonomy, begin->price, begin->geocode, begin->state, begin->space);
-  begin = begin->nextv;
- }
+{  
+    printf("List of Vehicles: \n\n");
+    while (begin != NULL) 
+    {
+        printf("%d -> %s -> %.2f -> %.2f -> %.2f -> %s -> %d -> %d ->\n", begin->vCode, begin->type, begin->batery, begin->autonomy, begin->price, begin->geocode, begin->state, begin->space);
+        begin = begin->nextv;
+    }
 }
 
 /**
- * @brief Done
+ * @brief Lists all the vehicles in descendent order by their autonomy
  * 
  * @param begin 
  */
 void listVehicleDesc(Vehicle* begin) 
 {
     Vehicle *x, *y;
-    float i;
-    int change;
+    float i, bat, price, change, wei;
+    int code, st, sp;
+    char tp[250], geo[250];
 
     if (begin == NULL) {
         printf("Linked list is empty\n");
         return;
-    } 
-    while(change)
-    {
-        change = 0;
-        x = begin;
-        while(x->nextv == NULL)
-        {
-            y = x->nextv;
-            if (x->autonomy < y->autonomy)
+    }
+    do {
+            change = 0;
+            x = begin;
+            while(x->nextv != NULL)
             {
-                i = x->autonomy;
-                x->autonomy = y->autonomy;
-                y->autonomy = i;
-                change = 1;
+                y = x->nextv;
+                if (x->autonomy < y->autonomy)
+                {
+                    code = x->vCode;
+                    x->vCode = y->vCode;
+                    y->vCode = code;
+
+                    strcpy(tp, x->type);
+                    strcpy(x->type, y->type);
+                    strcpy(y->type, tp);
+
+                    bat = x->batery;
+                    x->batery = y->batery;
+                    y->batery = bat;
+
+                    i = x->autonomy;
+                    x->autonomy = y->autonomy;
+                    y->autonomy = i;
+
+                    price = x->price;
+                    x->price = y->price;
+                    y->price = price;
+
+                    strcpy(geo, x->geocode);
+                    strcpy(x->geocode, y->geocode);
+                    strcpy(y->geocode, geo);
+
+                    st = x->state;
+                    x->state = y->state;
+                    y->state = st;
+
+                    sp = x->space;
+                    x->space = y->space;
+                    y->space = sp;
+                    
+                    wei = x->vweight;
+                    x->vweight = y->vweight;
+                    y->vweight = wei;
+
+                    change = 1;
+                }
+                x = x->nextv;
             }
-            x = x->nextv;
-        }
-    }
-    printf("List of Vehicles: \n\n");
-    while(begin != NULL) {
-        printf("%d -> %s -> %.2f -> %.2f -> %.2f -> %s -> %d -> %d\n", begin->vCode, begin->type, begin->batery, begin->autonomy, begin->price, begin->geocode, begin->state, begin->space);
-        begin = begin->nextv;
-    }
+        }while(change);
+
 }
 
 /**
- * @brief Done
+ * @brief Remove a vehicle from the linked list given his code
  * 
  * @param begin 
  * @param cod 
@@ -202,7 +235,7 @@ Vehicle* removeVehicle(Vehicle* begin, int cod)
 }
 
 /**
- * @brief Done
+ * @brief Seek vehicles by a given geocode 
  * 
  * @param begin 
  */
@@ -228,7 +261,7 @@ void seekVehicle(Vehicle* begin)
 }
 
 /**
- * @brief Done
+ * @brief Change vehicle data from the linked list
  * 
  * @param begin 
  * @param cod 
@@ -260,23 +293,4 @@ int changeVehicle(Vehicle* begin, int cod, char tp[], float bat, float aut, floa
         actual = actual->nextv;
     }
     return 0;
-}
-
-/**
- * @brief Done
- * 
- * @param begin 
- */
-void freeVehicle(Vehicle* begin)
-{
-    Vehicle* actual = begin;
-    int free = 0;
-    printf("Vehicles free: \n");
-    while (actual != NULL)
-    {
-        if(actual->state == 0)
-            printf("Code: %d | Type: %s | Price : %.2f | Batery: %.2f | Autonomy: %.2f | Geocode: %s\n", 
-                    actual->vCode, actual->type, actual->price, actual->batery, actual->autonomy, actual->geocode);
-        actual = actual->nextv;
-    }
 }
