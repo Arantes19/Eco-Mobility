@@ -13,3 +13,7 @@ How to read doxygen documentation:
 1. Open "html" folder;
 2. Search for "index" file and open with Chrome or any other browser;
 3. Navigate in the Data Strutures and Files section above;
+
+How to compile:
+1. gcc Models/Clients.c Models/Managers.c Models/Vehicles.c Models/Graph.c  main.c -o main
+2. .\main.exe
