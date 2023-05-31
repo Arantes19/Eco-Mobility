@@ -507,6 +507,7 @@ void listVehiclesPerRadius(Graph g, char geocode[], char type[], float radius)
     if (g != NULL)
     {
         Graph clientNode = findNode(g, geocode);
+
         if(clientNode == NULL) 
         {
             printf("Geocode doesn't exists in graph!!");
@@ -517,5 +518,13 @@ void listVehiclesPerRadius(Graph g, char geocode[], char type[], float radius)
     }
     else{
         printf("Nodes linked list empty");
+    }
+}
+
+void resetState(Graph g)
+{
+    while (g != NULL) {
+        g->state = 0;
+        g = g->nextr;
     }
 }

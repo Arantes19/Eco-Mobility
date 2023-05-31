@@ -197,10 +197,11 @@ int main()
         switch (op)
         {
             case 1: clients = readClients();
-                    vehicles = readVehicles();
+                    vehicles = readVehicles(); 
                     managers = readManagers();
                 break;
             case 2: do{
+                        system("cls");
                         opc = clientMenu();
                         switch (opc)
                         {
@@ -232,12 +233,13 @@ int main()
                                         printf("Failed to update client. Client not found.\n");
                                     }
                                 break;
-                            default: break;
+                            default: system("cls"); break;
                         }
                     } while (opc != 0);
                     break;
             case 3: 
                     do{
+                        system("cls");
                         opm = managerMenu();
                         switch (opm)
                         {
@@ -385,6 +387,7 @@ int main()
                                 break;
                             case 12:
                                     do{
+                                        system("cls");
                                         opg = graphMenu();
                                         switch (opg)
                                         {
@@ -478,21 +481,22 @@ int main()
                                                         printf("Chose a radius: ");
                                                         scanf("%f", &radius);
                                                         listVehiclesPerRadius(g, cGgeo, vGtype, radius);
+                                                        resetState(g);
                                                     }
                                                     else
                                                     {
                                                         printf("Client not found.\n");
                                                     }
                                                 break;
-                                            default: break;
+                                            default: system("cls"); break;
                                         }
                                         } while (opg != 0);
                                         break;
-                            default: break;
+                            default: system("cls"); break;
                         }
                     } while (opm != 0);
                 break;
-            default: break;
+            default: system("cls"); break;
         }
     } while (op != 0);
     return 0; 

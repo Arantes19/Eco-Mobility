@@ -1,5 +1,6 @@
-Lisboa
-Coimbra
-Aveiro
-Porto
+Viana
 Braga
+Porto
+Aveiro
+Coimbra
+Lisboa
